@@ -3,7 +3,7 @@
 require_once __DIR__ . "/../../../services/ImgBB/ImgBB.php";
 require_once __DIR__ . "/../../Validation/Validation.php";
 require_once __DIR__ . "/../../Database/Database.php";
-    
+     
 class ImageModel{
     private $img;
     private $productId;
