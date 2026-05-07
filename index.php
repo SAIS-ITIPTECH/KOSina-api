@@ -39,8 +39,8 @@ require_once __DIR__ . "/services/PayMongo/ConfirmPaid.php";
 set_exception_handler("ErrorHandler::handleException");
 
 // ENV
-$dotenv = Dotenv\Dotenv::createImmutable("./");
-$dotenv->load();
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
+$dotenv->safeLoad();
 
 class Main{ 
     private $table;
