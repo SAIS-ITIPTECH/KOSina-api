@@ -82,7 +82,6 @@ class Main{
             return null;
 
         } else if ($this->table == "confirm") {
-            http_response_code(200);
             $confirmPaid = new ConfirmPaid();
             $confirmPaid->checkPaid();
             return null;
