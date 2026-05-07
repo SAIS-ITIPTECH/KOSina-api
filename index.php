@@ -81,7 +81,7 @@ class Main{
             $return->checkToken();
             return null;
 
-        } else if ($this->table == "confirmPaid") {
+        } else if ($this->table == "confirm") {
             $confirmPaid = new ConfirmPaid();
             $confirmPaid->checkPaid();
             return null;
