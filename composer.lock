@@ -30,7 +30,8 @@
                 "phpunit/phpunit": "^9.5",
                 "psr/cache": "^2.0||^3.0",
                 "psr/http-client": "^1.0",
-                "psr/http-factory": "^1.0"
+                "psr/http-factory": "^1.0",
+                "ext-pdo_mysql": "*"
             },
             "suggest": {
                 "ext-sodium": "Support EdDSA (Ed25519) signatures",
