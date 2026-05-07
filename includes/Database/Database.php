@@ -8,8 +8,7 @@
         ){}
 
         public function connectDatabase(): PDO {
-            var_dump($this->host, $this->name, $this->user, $this->password);
-            $dsn = "mysql:$this->host;dbname=$this->name;charset=utf8";
+            $dsn = "mysql:host={$this->host};dbname={$this->name};charset=utf8";
             $pdo = new PDO($dsn, $this->user, $this->password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
