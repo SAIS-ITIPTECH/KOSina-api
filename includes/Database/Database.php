@@ -8,8 +8,8 @@
         ){}
 
         public function connectDatabase(): PDO {
-            $dsn = "mysql:host=mysql.railway.internal;dbname=kosina_admin;charset=utf8";
-            $pdo = new PDO($dsn, "root", "racLGDAqWzQMLFCGnXWqkongiqpLDXDS", [
+            $dsn = "mysql:$this->host;dbname=$this->name;charset=utf8";
+            $pdo = new PDO($dsn, $this->user, $this->host, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             ]);
