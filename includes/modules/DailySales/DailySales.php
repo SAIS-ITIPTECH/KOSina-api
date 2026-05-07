@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../../Controller/Controller.php";
-require_once __DIR__ . "DailySalesQueryBuilder.php";
+require_once __DIR__ . "/DailySalesQueryBuilder.php";
 
 class DailySales implements Controller{
     private $queryBuilder;

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/../../Controller/Controller.php";
-require_once __DIR__ . "NewOrderModel.php";
-require_once __DIR__ . "NewOrderQueryBuilder.php";
+require_once __DIR__ . "/NewOrderModel.php";
+require_once __DIR__ . "/NewOrderQueryBuilder.php";
 require_once __DIR__ . "/../../modules/DailySales/DailySalesQueryBuilder.php";
 
 class NewOrder implements Controller {

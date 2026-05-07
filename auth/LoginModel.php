@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__ . "LoginQuery.php";
+include_once __DIR__ . "/LoginQuery.php";
 require_once __DIR__ . "/../includes/Validation/Validation.php";
 
 

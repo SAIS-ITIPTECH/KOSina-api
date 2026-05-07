@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . "Database.php";
-require_once __DIR__ . "Execution.php";
+require_once __DIR__ . "/Database.php";
+require_once __DIR__ . "/Execution.php";
 
 
 class CredentialsGraber{

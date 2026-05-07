@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . "LoginModel.php";
-require_once __DIR__ . "LoginQuery.php";
-require_once __DIR__ . "JWTMaker.php";
+require_once __DIR__ . "/LoginModel.php";
+require_once __DIR__ . "/LoginQuery.php";
+require_once __DIR__ . "/JWTMaker.php";
 
 class LoginController{
     private $model;
