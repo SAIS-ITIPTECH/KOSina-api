@@ -66,6 +66,8 @@ class Main{
     private function setTarget(){
         $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
         $req = explode("/", trim($path, "/"));
+        print_r(1);
+        print_r($req);
         $this->table = $req[0] ?? null;
         $this->id = $req[1] ?? null;
         print_r(1);
