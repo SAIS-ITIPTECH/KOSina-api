@@ -6,7 +6,6 @@ class LoginQuery{
     private $execution;
 
     public function __construct(){
-        var_dump(getenv("DATABASE_HOSTNAME"), getenv("DATABASE_NAME"), getenv("DATABASE_USERNAME"));
         $database = new Database(getenv("DATABASE_HOSTNAME"), getenv("DATABASE_NAME"), getenv("DATABASE_USERNAME"));
         $this->pdo = $database->connectDatabase();
         $this->execution = new Execution;
