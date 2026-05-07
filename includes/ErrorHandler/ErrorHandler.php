@@ -5,12 +5,12 @@ class ErrorHandler {
         http_response_code(500);
 
         if (getenv("APP_ENV") === 'development') {
-            echo json_encode([
+            error_log(json_encode([
                 "status" => "error",
                 "message" => $exception->getMessage(),
                 "line" => $exception->getLine(),
                 "file" => $exception->getFile()
-            ]);
+            ]));
         } else {
             
             echo json_encode([
