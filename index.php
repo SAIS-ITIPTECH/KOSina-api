@@ -67,24 +67,23 @@ class Main{
         $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
         $req = explode("/", trim($path, "/"));
         $this->table = $req[1] ?? null;
-        $this-> id = $req[2] ?? null;
+        $this->id = $req[2] ?? null;
         print_r($req);
-        var_dump($path);
         print_r($_ENV);
     }
 
     private function determine(){
-        if($this->table === "login"){
+        if($this->table == "login"){
             $login = new LoginController();
             $login->start();
             return null;
 
-        } else if ($this->table === "return") {
+        } else if ($this->table == "return") {
             $return = new TokenChecker();
             $return->checkToken();
             return null;
 
-        } else if ($this->table === "confirmPaid") {
+        } else if ($this->table == "confirmPaid") {
             $confirmPaid = new ConfirmPaid();
             $confirmPaid->checkPaid();
             return null;
