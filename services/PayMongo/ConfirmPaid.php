@@ -18,7 +18,7 @@ class ConfirmPaid{
     
         $paymentStatus = $result['data']['attributes']['data']['attributes']['payments'][0]['attributes']['status'];
         if ($paymentStatus === "paid"){
-            $stmt = $pdo->prepare('UPDATE order_history SET paid = true WHERE orderId = :setid');
+            $stmt = $pdo->prepare('UPDATE order_history SET paid = true WHERE order_id= :setid');
             $stmt->bindValue(":setid", $result['data']['attributes']['data']['attributes']['line_items'][0]['description']);
             $stmt->execute();
         }
