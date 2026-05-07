@@ -71,7 +71,6 @@ class Main{
     }
 
     private function determine(){
-        print_r(3);
         if($this->table == "login"){
             $login = new LoginController();
             $login->start();
@@ -97,7 +96,7 @@ class Main{
 
         // CONNECT DATABASE
         $dbCredentials = $this->GetDbCrendentials();
-        $database = new Database("localhost", $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
+        $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $pdo = $database->connectDatabase();
         $execution = new Execution();
 
