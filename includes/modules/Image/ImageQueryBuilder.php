@@ -1,6 +1,6 @@
 <?php
-require_once "./includes/Database/Execution.php";
-require_once "./includes/Database/Database.php";
+require_once __DIR__ . "/../../Database/Execution.php";
+require_once __DIR__ . "/../../Database/Database.php";
 
 class ImageQueryBuilder{
     private $msg;

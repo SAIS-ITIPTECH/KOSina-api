@@ -1,7 +1,7 @@
 <?php
-    require_once "includes/Controller/Controller.php";
-    require_once "HistoryModel.php";
-    require_once "HistoryQueryBuilder.php";
+    require_once __DIR__ . "/../../Controller/Controller.php";
+    require_once __DIR__ . "HistoryModel.php";
+    require_once __DIR__ . "HistoryQueryBuilder.php";
 
     class History implements Controller {
         private $queryBuilder;

@@ -1,8 +1,8 @@
 <?php
-require_once "includes/Controller/Controller.php";
-require_once "NewOrderModel.php";
-require_once "NewOrderQueryBuilder.php";
-require_once "./includes/modules/DailySales/DailySalesQueryBuilder.php";
+require_once __DIR__ . "/../../Controller/Controller.php";
+require_once __DIR__ . "NewOrderModel.php";
+require_once __DIR__ . "NewOrderQueryBuilder.php";
+require_once __DIR__ . "/../../modules/DailySales/DailySalesQueryBuilder.php";
 
 class NewOrder implements Controller {
     private $queryBuilder;

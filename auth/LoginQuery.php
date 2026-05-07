@@ -1,5 +1,5 @@
 <?php
-require_once "./includes/Database/Execution.php";
+require_once __DIR__ . "/../includes/Database/Execution.php";
 
 class LoginQuery{
     private $pdo;

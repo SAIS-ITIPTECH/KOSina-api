@@ -1,7 +1,7 @@
 <?php
 
-require_once "./includes/Validation/Validation.php";
-require_once "./includes/Database/Database.php";
+require_once __DIR__ . "/../../Validation/Validation.php";
+require_once __DIR__ . "/../../Database/Database.php";
 
 class NewOrderModel {
 private $dailySalesId;

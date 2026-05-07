@@ -1,7 +1,7 @@
 <?php
-require_once "includes/Controller/Controller.php";
-require_once "CategoryModel.php";
-require_once "CategoryQueryBuilder.php";
+require_once __DIR__ . "/../../Controller/Controller.php";
+require_once __DIR__ . "CategoryModel.php";
+require_once __DIR__ . "CategoryQueryBuilder.php";
 
 class Categories implements Controller{
     private $queryBuilder;

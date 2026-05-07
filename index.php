@@ -13,27 +13,27 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 }
 
 // MODULES
-require_once "./includes/modules/Categories/Categories.php";
-require_once "./includes/modules/Products/Products.php";
-require_once "./includes/modules/image/Image.php";
-require_once "./includes/modules/History/History.php";
-require_once "./includes/modules/Details/Details.php";
-require_once "./includes/modules/NewOrder/NewOrder.php";
-require_once "./includes/modules/DailySales/DailySales.php";
+require_once __DIR__ . "/includes/modules/Categories/Categories.php";
+require_once __DIR__ . "/includes/modules/Products/Products.php";
+require_once __DIR__ . "/includes/modules/image/Image.php";
+require_once __DIR__ . "/includes/modules/History/History.php";
+require_once __DIR__ . "/includes/modules/Details/Details.php";
+require_once __DIR__ . "/includes/modules/NewOrder/NewOrder.php";
+require_once __DIR__ . "/includes/modules/DailySales/DailySales.php";
 
 // TOOLS
-require_once "./includes/ErrorHandler/ErrorHandler.php";
-require_once "./includes/Database/CredentialsGraber.php";
-require_once "./includes/Database/Database.php";
-require_once "./includes/Database/Execution.php";
+require_once __DIR__ . "/includes/ErrorHandler/ErrorHandler.php";
+require_once __DIR__ . "/includes/Database/CredentialsGraber.php";
+require_once __DIR__ . "/includes/Database/Database.php";
+require_once __DIR__ . "/includes/Database/Execution.php";
 
 // AUTHENTICATION
-require_once "./auth/LoginController.php";
-require_once "./auth/TokenChecker.php";
-require_once "./auth/TokenChecker.php";
+require_once __DIR__ . "/auth/LoginController.php";
+require_once __DIR__ . "/auth/TokenChecker.php";
+require_once __DIR__ . "/auth/TokenChecker.php";
 
 // SERVICES
-require_once "./services/PayMongo/ConfirmPaid.php";
+require_once __DIR__ . "/services/PayMongo/ConfirmPaid.php";
 
 // EXCEPTION HANDLER
 set_exception_handler("ErrorHandler::handleException");

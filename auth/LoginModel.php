@@ -1,7 +1,7 @@
 <?php
 
-include_once "LoginQuery.php";
-require_once "./includes/Validation/Validation.php";
+include_once __DIR__ . "LoginQuery.php";
+require_once __DIR__ . "/../includes/Validation/Validation.php";
 
 
 class LoginModel{

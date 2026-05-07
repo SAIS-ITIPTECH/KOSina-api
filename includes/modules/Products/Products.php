@@ -1,7 +1,7 @@
 <?php
-require_once "includes/Controller/Controller.php";
-require_once "ProductModel.php";
-require_once "ProductQueryBuilder.php";
+require_once __DIR__ . "/../../Controller/Controller.php";
+require_once __DIR__ . "ProductModel.php";
+require_once __DIR__ . "ProductQueryBuilder.php";
 
 class Products implements Controller {
     private $queryBuilder;

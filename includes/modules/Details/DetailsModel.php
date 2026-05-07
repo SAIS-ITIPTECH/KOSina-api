@@ -1,5 +1,5 @@
 <?php
-require_once "./includes/Validation/Validation.php";
+require_once __DIR__ . "/../../Validation/Validation.php";
 
 class DetailsModel {
     private $orderId;

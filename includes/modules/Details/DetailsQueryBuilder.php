@@ -1,6 +1,6 @@
 <?php
-    require_once "./includes/Database/Execution.php";
-    require_once "./includes/Database/Database.php";
+    require_once __DIR__ . "/../../includes/Database/Execution.php";
+    require_once __DIR__ . "/../../includes/Database/Database.php";
     
 
     class DetailsQueryBuilder{

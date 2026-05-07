@@ -1,7 +1,7 @@
 <?php
-    require_once "includes/Controller/Controller.php";
-    require_once "DetailsModel.php";
-    require_once "DetailsQueryBuilder.php";
+    require_once __DIR__ . "/../../Controller/Controller.php";
+    require_once __DIR__ . "DetailsModel.php";
+    require_once __DIR__ . "DetailsQueryBuilder.php";
 
     class Details implements Controller {
         private $queryBuilder;

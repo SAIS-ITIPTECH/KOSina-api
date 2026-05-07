@@ -1,7 +1,7 @@
 <?php
-require_once "./includes/Database/Execution.php";
-require_once "./includes/Database/Database.php";
-require_once "./includes/Validation/Validation.php";
+require_once __DIR__ . "/../../Database/Execution.php";
+require_once __DIR__ . "/../../Database/Database.php";
+require_once __DIR__ . "/../../Validation/Validation.php";
 
 class DailySalesQueryBuilder{
     private $msg;

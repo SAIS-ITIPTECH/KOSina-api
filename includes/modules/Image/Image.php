@@ -1,7 +1,7 @@
 <?php
-require_once "includes/Controller/Controller.php";
-require_once "ImageModel.php";
-require_once "ImageQueryBuilder.php";
+require_once __DIR__ . "/../../Controller/Controller.php";
+require_once __DIR__ . "ImageModel.php";
+require_once __DIR__ . "ImageQueryBuilder.php";
 
 class Image implements Controller{
     private $queryBuilder;

@@ -1,8 +1,8 @@
 <?php
 
-require_once "./includes/Database/Execution.php";
-require_once "./includes/Database/Database.php";
-require_once "./services/PayMongo/CheckoutSession.php";
+require_once __DIR__ . "/../../Database/Execution.php";
+require_once __DIR__ . "/../../Database/Database.php";
+require_once __DIR__ . "/../../../services/PayMongo/CheckoutSession.php";
 
 class NewOrderQueryBuilder{
      public function __construct(

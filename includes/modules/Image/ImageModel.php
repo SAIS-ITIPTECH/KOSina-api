@@ -1,8 +1,8 @@
 <?php
 
-require_once "./services/ImgBB/ImgBB.php";
-require_once "./includes/Validation/Validation.php";
-require_once "./includes/Database/Database.php";
+require_once __DIR__ . "/../../../services/ImgBB/ImgBB.php";
+require_once __DIR__ . "./includes/Validation/Validation.php";
+require_once __DIR__ . "./includes/Database/Database.php";
     
 class ImageModel{
     private $img;
