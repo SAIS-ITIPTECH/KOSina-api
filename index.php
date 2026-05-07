@@ -107,7 +107,7 @@ class Main{
         $tokenChecker = new TokenChecker();
         $token = $tokenChecker->decodeToken();
         $credentials = new CredentialsGraber($token);
-        $credentials->connectCredentials("account_id");
+        $credentials->connectCredentialsId();
         return ["dbName" => $credentials->getDbName(), "dbUsername" =>  $credentials->getDbUsername(), "dbPassword" =>  $credentials->getDbPassword()];
     }
 }

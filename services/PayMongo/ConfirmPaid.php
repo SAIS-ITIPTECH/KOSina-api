@@ -14,10 +14,9 @@ class ConfirmPaid{
         error_log(json_encode($result['data']['attributes']['data']['attributes']['line_items'][0]['name']));
 
         $getDb = new CredentialsGraber($result['data']['attributes']['data']['attributes']['line_items'][0]['name']);
-        $getDb->connectCredentials("resto_name");
+        $getDb->connectCredentialsName();
 
-        error_log("--- NEW 2 WEBHOOK ---");
-        error_log(json_encode($getDb->getDbName(), $getDb->getDbUsername(), $getDb->getDbPassword()));
+    
         
         $database = new Database(getenv("DATABASE_HOSTNAME"), $getDb->getDbName(), $getDb->getDbUsername(), $getDb->getDbPassword());
         $pdo = $database->connectDatabase();
