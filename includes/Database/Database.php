@@ -8,6 +8,7 @@
         ){}
 
         public function connectDatabase(): PDO {
+            phpinfo();
             $dsn = "mysql:host={$this->host};dbname={$this->name};charset=utf8";
             $pdo = new PDO($dsn, $this->user, $this->password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
