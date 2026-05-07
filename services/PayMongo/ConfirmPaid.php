@@ -7,16 +7,17 @@ class ConfirmPaid{
     public function checkPaid(){
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
-            $result = file_get_contents("php://input");
-            error_log("--- NEW PAYMONGO WEBHOOK ---");
-            error_log($result);
-            error_log("EMPTY");
+            $result = json_decode(file_get_contents("php://input"), true) ?? [];
         }
 
-        
+        error_log("--- NEW 1 WEBHOOK ---");
+        error_log(json_encode($result['data']['attributes']['data']['attributes']['line_items'][0]['name']));
 
         $getDb = new CredentialsGraber($result['data']['attributes']['data']['attributes']['line_items'][0]['name']);
         $getDb->connectCredentials("resto_name");
+
+        error_log("--- NEW 2 WEBHOOK ---");
+        error_log(json_encode($getDb->getDbName(), $getDb->getDbUsername(), $getDb->getDbPassword()));
         
         $database = new Database(getenv("DATABASE_HOSTNAME"), $getDb->getDbName(), $getDb->getDbUsername(), $getDb->getDbPassword());
         $pdo = $database->connectDatabase();
