@@ -15,7 +15,6 @@ class JWTMaker{
     ){}
 
     public function createToken(){
-        $key = $_ENV["JWT_KEY"];
         $token = JWT::encode(
             [
                 'iat' => time(),
@@ -25,7 +24,7 @@ class JWTMaker{
                     "id" => $this->clientId
                 ]
             ],
-            $key,
+            getenv("JWT_KEY"),
             'HS256'
         );
         echo json_encode(["token" => $token, "name" => $this->clientName, "resto" => $this->restoName, "expiration" => $this->expiry]);

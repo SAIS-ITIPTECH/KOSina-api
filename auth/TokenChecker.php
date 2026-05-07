@@ -32,8 +32,7 @@ class TokenChecker{
 
     public function decodeToken(){
         try {
-            $key = $_ENV["JWT_KEY"];
-            $decoded = JWT::decode($this->token, new Key($key, "HS256"));
+            $decoded = JWT::decode($this->token, new Key(getenv("JWT_KEY"), "HS256"));
             return $decoded->data->id;
 
         } catch (ExpiredException $e) {

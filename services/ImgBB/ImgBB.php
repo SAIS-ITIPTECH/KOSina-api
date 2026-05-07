@@ -7,7 +7,7 @@ class ImgBB{
         $client = new \GuzzleHttp\Client();
         $response = $client->post('https://api.imgbb.com/1/upload', [
         'query' => [
-            'key'        => $_ENV["IMGBB_KEY"],
+            'key'        => getenv("IMGBB_KEY"),
         ],
         'multipart' => [
                 [

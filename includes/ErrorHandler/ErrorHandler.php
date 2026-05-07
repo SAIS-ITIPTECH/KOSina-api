@@ -4,7 +4,7 @@ class ErrorHandler {
     public static function handleException(Throwable $exception) {
         http_response_code(500);
 
-        if (true) {
+        if (getenv("APP_ENV") === 'development') {
             echo json_encode([
                 "status" => "error",
                 "message" => $exception->getMessage(),
