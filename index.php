@@ -68,11 +68,12 @@ class Main{
         $req = explode("/", trim($path, "/"));
         $this->table = $req[1] ?? null;
         $this->id = $req[2] ?? null;
-        print_r($req);
-        print_r($_ENV);
+        print_r(1);
+        print_r(2);
     }
 
     private function determine(){
+        print_r(3);
         if($this->table == "login"){
             $login = new LoginController();
             $login->start();
