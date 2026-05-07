@@ -13,7 +13,7 @@ class CredentialsGraber{
 
 
     public function __construct(private $id){
-        $database = new Database($_ENV["DATABASE_HOSTNAME"], $_ENV["DATABASE_NAME"], $_ENV["DATABASE_USERNAME"]);
+        $database = new Database(getenv("DATABASE_HOSTNAME"), getenv("DATABASE_NAME"), getenv("DATABASE_USERNAME"), getenv("DATABASE_PASSWORD"));
         $this->pdo = $database->connectDatabase();
         $this->execution = new Execution();
         
