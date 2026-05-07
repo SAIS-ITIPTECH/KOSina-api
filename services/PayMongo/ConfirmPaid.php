@@ -13,7 +13,7 @@ class ConfirmPaid{
         $getDb = new CredentialsGraber($result['data']['attributes']['data']['attributes']['line_items'][0]['name']);
         $getDb->connectCredentials("resto_name");
         
-        $database = new Database("localhost", $getDb->getDbName(),  $getDb->getDbUsername(),  $getDb->getDbPassword());
+        $database = new Database(getenv("DATABASE_HOSTNAME"), $getDb->getDbName(),  $getDb->getDbUsername(),  $getDb->getDbPassword());
         $pdo = $database->connectDatabase();
     
         $paymentStatus = $result['data']['attributes']['data']['attributes']['payments'][0]['attributes']['status'];
