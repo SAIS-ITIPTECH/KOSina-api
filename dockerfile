@@ -11,3 +11,5 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 COPY php.ini /usr/local/etc/php/conf.d/custom.ini
+
+RUN php -v
