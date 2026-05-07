@@ -8,7 +8,7 @@
         ){}
 
         public function connectDatabase(): PDO {
-            $dsn = "mysql:host={$this->host};dbname={$this->name};charset=utf8";
+            $dsn = "mysql:host=localhost;dbname=kosina_admin;charset=utf8";
             $pdo = new PDO($dsn, $this->user, $this->password, [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
