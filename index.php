@@ -68,6 +68,8 @@ class Main{
         $req = explode("/", trim($path, "/"));
         $this->table = $req[1] ?? null;
         $this-> id = $req[2] ?? null;
+        print_r($req);
+        var_dump($path);
     }
 
     private function determine(){
