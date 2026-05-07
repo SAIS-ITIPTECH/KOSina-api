@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
 // MODULES
 require_once __DIR__ . "/includes/modules/Categories/Categories.php";
 require_once __DIR__ . "/includes/modules/Products/Products.php";
-require_once __DIR__ . "/includes/modules/image/Image.php";
+require_once __DIR__ . "/includes/modules/Image/Image.php";
 require_once __DIR__ . "/includes/modules/History/History.php";
 require_once __DIR__ . "/includes/modules/Details/Details.php";
 require_once __DIR__ . "/includes/modules/NewOrder/NewOrder.php";
