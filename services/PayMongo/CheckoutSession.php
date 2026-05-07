@@ -17,7 +17,7 @@ class CheckoutSession{
         'headers' => [
             'Content-Type' => 'application/json',
             'accept' => 'application/json',
-            'authorization' => "Basic {getenv('PAYMONGO_KEY')}"
+            'authorization' => "Basic ". getenv('PAYMONGO_KEY')
         ],
         ]);
 
