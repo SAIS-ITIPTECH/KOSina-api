@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../../Controller/Controller.php";
+require_once __DIR__ . "/ImageModel.php";
 require_once __DIR__ . "/ImageQueryBuilder.php";
 
 class Image implements Controller{

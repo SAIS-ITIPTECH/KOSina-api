@@ -29,12 +29,13 @@ class NewOrderQueryBuilder{
             $this->updateTotalPrice();
             $this->updateDailySales();
             $this->pdo->commit();
-            $this->checkout();
+            
 
         } catch (\Exception $e) {
             $this->pdo->rollBack();
             throw $e;
         }
+        $this->checkout();
     }
 
     private function addNewOrder(){
