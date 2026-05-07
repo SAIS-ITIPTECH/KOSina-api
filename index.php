@@ -70,6 +70,7 @@ class Main{
         $this-> id = $req[2] ?? null;
         print_r($req);
         var_dump($path);
+        print_r($_ENV);
     }
 
     private function determine(){
