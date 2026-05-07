@@ -1,5 +1,6 @@
 <?php
 
+echo phpinfo();
 //KakosaNiNina11
 // HEADERS
 header("Content-Type: application/json; charset=utf-8");
