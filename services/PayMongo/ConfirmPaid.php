@@ -10,20 +10,15 @@ class ConfirmPaid{
             $result = json_decode(file_get_contents("php://input"), true) ?? [];
         }
 
-        error_log("--- NEW 1 WEBHOOK ---");
-        error_log(json_encode($result['data']['attributes']['data']['attributes']['line_items'][0]['name']));
-
         $getDb = new CredentialsGraber($result['data']['attributes']['data']['attributes']['line_items'][0]['name']);
         $getDb->connectCredentialsName();
-
-    
         
         $database = new Database(getenv("DATABASE_HOSTNAME"), $getDb->getDbName(), $getDb->getDbUsername(), $getDb->getDbPassword());
         $pdo = $database->connectDatabase();
     
         $paymentStatus = $result['data']['attributes']['data']['attributes']['payments'][0]['attributes']['status'];
         if ($paymentStatus === "paid"){
-            $stmt = $pdo->prepare('UPDATE ordertest SET paid = true WHERE orderId = :setid');
+            $stmt = $pdo->prepare('UPDATE order_history SET paid = true WHERE orderId = :setid');
             $stmt->bindValue(":setid", $result['data']['attributes']['data']['attributes']['line_items'][0]['description']);
             $stmt->execute();
         }

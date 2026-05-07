@@ -16,7 +16,6 @@ class CredentialsGraber{
         $database = new Database(getenv("DATABASE_HOSTNAME"), getenv("DATABASE_NAME"), getenv("DATABASE_USERNAME"), getenv("DATABASE_PASSWORD"));
         $this->pdo = $database->connectDatabase();
         $this->execution = new Execution();
-        
     }
 
     public function connectCredentialsId(){
