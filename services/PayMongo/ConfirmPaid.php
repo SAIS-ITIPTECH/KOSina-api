@@ -9,11 +9,11 @@ class ConfirmPaid{
         if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
             $result = json_decode(file_get_contents("php://input"), true) ?? [];
         }
-        print_r($result);
+        
         $getDb = new CredentialsGraber($result['data']['attributes']['data']['attributes']['line_items'][0]['name']);
         $getDb->connectCredentials("resto_name");
         
-        $database = new Database(getenv("DATABASE_HOSTNAME"), $getDb->getDbName(),  $getDb->getDbUsername(),  $getDb->getDbPassword());
+        $database = new Database(getenv("DATABASE_HOSTNAME"), $getDb->getDbName(), $getDb->getDbUsername(), $getDb->getDbPassword());
         $pdo = $database->connectDatabase();
     
         $paymentStatus = $result['data']['attributes']['data']['attributes']['payments'][0]['attributes']['status'];
