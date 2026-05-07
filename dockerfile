@@ -28,4 +28,4 @@ COPY php.ini /usr/local/etc/php/conf.d/custom.ini
 
 RUN php -v
 
-CMD ["frankenphp", "php-server", "--listen", ":8080", "--disable-auto-https"]
+CMD ["frankenphp", "php-server", "--listen", ":${PORT}"]
