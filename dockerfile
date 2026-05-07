@@ -1,6 +1,8 @@
 FROM dunglas/frankenphp:php8.4.20-bookworm
 
-# Install composer
+# Install git and composer
+RUN apt-get update && apt-get install -y git unzip
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Install PHP extensions
