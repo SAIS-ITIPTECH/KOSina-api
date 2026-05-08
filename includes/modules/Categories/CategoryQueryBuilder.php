@@ -33,7 +33,7 @@ class CategoryQueryBuilder{
     }
 
     public function delete($id){
-        $query = "UPDATE menu_categories SET deleted = true WHERE category_id = ':setid'";
+        $query = "UPDATE menu_categories SET deleted = true WHERE category_id = :setid";
         if(!$this->model->validateId($id)){return;}
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_STR);
