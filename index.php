@@ -6,11 +6,6 @@ $allowedDomain = [
     "https://sais-itiptech.github.io/KOSina-Dashboard/",
 ];
 
-if (!in_array($_SERVER['HTTP_ORIGIN'], $allowedDomain)) { 
-    http_response_code(401);
-    echo json_encode(["status" => "error", "message" => strtoupper("UNAUTHORIZED DOMAIN ORIGIN!")]);
-}
-
 header("Content-Type: application/json; charset=utf-8");
 header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
 header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
