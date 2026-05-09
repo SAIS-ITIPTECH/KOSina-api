@@ -8,7 +8,7 @@ class HistoryQueryBuilder{
     public function __construct(private $model, private $pdo, private $execution){}
 
     public function get(){
-       $query = "SELECT order_history.*, daily_sales.daily_sale_id FROM order_history LEFT JOIN daily_sales ON order_history.daily_sale_id = daily_sales.daily_sale_id;";
+       $query = "SELECT order_history.*, daily_sales.daily_sale_id FROM order_history LEFT JOIN daily_sales ON order_history.daily_sale_id = daily_sales.daily_sale_id ORDER BY order_id DESC";
         $stmt = $this->pdo->prepare($query);
         $this->execution->execute($stmt);
         $result = $this->execution->getResults();

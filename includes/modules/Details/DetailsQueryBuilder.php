@@ -9,7 +9,7 @@
         public function __construct(private $model, private $pdo, private $execution){}
 
         public function get(){
-            $query = "SELECT order_details.*, product_list.name FROM order_details LEFT JOIN product_list ON product_list.product_id = order_details.product_id";
+            $query = "SELECT order_details.*, product_list.name FROM order_details LEFT JOIN product_list ON product_list.product_id = order_details.product_id ORDER BY order_id DESC";
             $stmt = $this->pdo->prepare($query);
             $this->execution->execute($stmt);
             $result = $this->execution->getResults();

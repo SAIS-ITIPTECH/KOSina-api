@@ -30,7 +30,7 @@ class DailySalesQueryBuilder{
     }
 
     public function update($dailySalesId, $totalPrice){
-        $query = "UPDATE daily_sales SET total_income = total_income + :setTotalPrice, total_sales = total_sales + 1 WHERE daily_sale_id = :setid;";
+        $query = "UPDATE daily_sales SET total_income = total_income + :setTotalPrice, total_sales = total_sales + 1 WHERE daily_sale_id = :setid ORDER BY daily_sale_id DESC;";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setid", $dailySalesId, PDO::PARAM_INT);
