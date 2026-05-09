@@ -35,7 +35,7 @@ class NewOrderQueryBuilder{
             $this->pdo->rollBack();
             throw $e;
         }
-        $this->checkout();
+        if ($this->model->getPaymentMethod() === "cashless") { $this->checkout(); }
     }
 
     private function addNewOrder(){
