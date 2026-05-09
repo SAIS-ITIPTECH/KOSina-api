@@ -13,7 +13,7 @@ class CheckoutSession{
     public function createSession(){
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://api.paymongo.com/v1/checkout_sessions', [
-        'body' => '{"data":{"attributes":{"send_email_receipt":false,"show_description":true,"show_line_items":true,"line_items":[{"currency":"PHP","description":"'."$this->orderId".'","amount":'."$this->totalPrice".',"name":"'."$this->restoName".'","quantity":1}],"payment_method_types":["qrph"]}}}',
+        'body' => '{"data":{"attributes":{"send_email_receipt":false,"show_description":true,"show_line_items":true,"success_url": "https://sais-itiptech.github.io/KOSina-Kiosk-Ordering-System/Kiosk-User-Interface/pages/finishCheckout.html","line_items":[{"currency":"PHP","description":"'."$this->orderId".'","amount":'."$this->totalPrice".',"name":"'."$this->restoName".'","quantity":1}],"payment_method_types":["qrph"]}}}',
         'headers' => [
             'Content-Type' => 'application/json',
             'accept' => 'application/json',
