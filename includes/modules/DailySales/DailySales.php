@@ -6,9 +6,9 @@ class DailySales implements Controller{
     private $queryBuilder;
 
     public function __construct(
-        private $id,
         private $pdo,
-        private $execution
+        private $execution,
+        private $id
     ){}
 
     public function buildModel(){

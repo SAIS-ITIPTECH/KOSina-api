@@ -7,9 +7,9 @@ class Products implements Controller {
     private $queryBuilder;
 
     public function __construct(
-        private $id,
         private $pdo,
-        private $execution
+        private $execution,
+        private $id,
     ){}
 
     public function buildModel(){
@@ -20,7 +20,7 @@ class Products implements Controller {
     public function query(){
         switch($_SERVER["REQUEST_METHOD"]){
             case "GET":
-                $this->queryBuilder->get();
+                $this->queryBuilder->get($this->id);
                 break;
 
             case "POST":

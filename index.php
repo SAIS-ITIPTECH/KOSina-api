@@ -104,7 +104,7 @@ class Main{
         $pdo = $database->connectDatabase();
         $execution = new Execution();
 
-        return new $controller($this->id, $pdo, $execution);
+        return new $controller($pdo, $execution, $this->id);
     }
 
     private function GetDbCrendentials(){

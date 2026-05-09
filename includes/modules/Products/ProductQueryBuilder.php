@@ -7,9 +7,10 @@ class ProductQueryBuilder {
 
     public function __construct(private $model, private $pdo, private $execution){}
 
-    public function get(){
-        $query = "SELECT product_list.product_id, product_list.name, product_list.category_id, product_list.price, product_list.available, product_images.display_url, product_images.image_id FROM product_list LEFT JOIN product_images ON product_list.product_id = product_images.product_id WHERE product_list.deleted = false";
+    public function get($id){
+        $query = !isset($id) ? "SELECT product_list.product_id, product_list.name, product_list.category_id, product_list.price, product_list.available, product_images.display_url, product_images.image_id FROM product_list LEFT JOIN product_images ON product_list.product_id = product_images.product_id WHERE product_list.deleted = false" : "SELECT product_list.product_id, product_list.name, product_list.category_id, product_list.price, product_list.available, product_images.display_url, product_images.image_id FROM product_list LEFT JOIN product_images ON product_list.product_id = product_images.product_id WHERE product_list.deleted = false AND product_list.category_id = :setid";
         $stmt = $this->pdo->prepare($query);
+        if (isset($id)) {$stmt->bindValue(":setid", $id, PDO::PARAM_STR);}
         $this->execution->execute($stmt);
         $result = $this->execution->getResults();
         http_response_code(200);
@@ -27,18 +28,18 @@ class ProductQueryBuilder {
     public function update($id){
         if(!$this->model->validateId($id)) return;
         
-        $query = "UPDATE product_list SET name = :setName, price = :setPrice, category_id = :setCategoryId, available = :setAvailable WHERE product_id = :setId";
+        $query = "UPDATE product_list SET name = :setName, price = :setPrice, category_id = :setCategoryId, available = :setAvailable WHERE product_id = :setid";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_INT);
         $this->superBind($stmt, "has been updated.");
     }
 
     public function delete($id){
         if (!$this->model->validateId($id)) { return; }
 
-        $query = "UPDATE product_list SET deleted = true WHERE product_id = :setId";
+        $query = "UPDATE product_list SET deleted = true WHERE product_id = :setid";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_INT);
         $this->execution->execute($stmt);
         http_response_code(200);
         echo json_encode(["status" => "success", "message" => strtoupper("DELETED SUCCESSFULLY")]);

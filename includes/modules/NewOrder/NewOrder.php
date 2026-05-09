@@ -8,9 +8,9 @@ class NewOrder implements Controller {
     private $queryBuilder;
 
     public function __construct(
-        $id,
         private $pdo,
-        private $execution
+        private $execution,
+        private $id
     ){}
 
     public function buildModel(){
