@@ -4,7 +4,7 @@ require_once __DIR__ . "/../../includes/Database/CredentialsGraber.php";
 require_once __DIR__ . "/../../includes/Database/Database.php";
 
 class ConfirmPaid{
-    public function checkPaid(){
+    public function confirm(){
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
         if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
             $result = json_decode(file_get_contents("php://input"), true) ?? [];

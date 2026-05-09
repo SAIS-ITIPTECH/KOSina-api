@@ -38,6 +38,7 @@ require_once __DIR__ . "/auth/TokenChecker.php";
 
 // SERVICES
 require_once __DIR__ . "/services/PayMongo/ConfirmPaid.php";
+require_once __DIR__ . "/services/PayMongo/CheckoutSession.php";
 
 // EXCEPTION HANDLER
 set_exception_handler("ErrorHandler::handleException");
@@ -87,7 +88,12 @@ class Main{
 
         } else if ($this->table == "confirm") {
             $confirmPaid = new ConfirmPaid();
-            $confirmPaid->checkPaid();
+            $confirmPaid->confirm();
+            return null;
+            
+        } else if ($this->table == "checkpaid") {
+            $checkPaid = new CheckoutSession();
+            $checkPaid->checkPaid($this->id);
             return null;
         }
 
