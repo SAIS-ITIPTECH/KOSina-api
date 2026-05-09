@@ -10,7 +10,8 @@ class ProductQueryBuilder {
     public function get($id){
         $query = !isset($id) ? "SELECT product_list.product_id, product_list.name, product_list.category_id, product_list.price, product_list.available, product_images.display_url, product_images.image_id FROM product_list LEFT JOIN product_images ON product_list.product_id = product_images.product_id WHERE product_list.deleted = false" : "SELECT product_list.product_id, product_list.name, product_list.category_id, product_list.price, product_list.available, product_images.display_url, product_images.image_id FROM product_list LEFT JOIN product_images ON product_list.product_id = product_images.product_id WHERE product_list.deleted = false AND product_list.category_id = :setid";
         $stmt = $this->pdo->prepare($query);
-        if (isset($id)) {$stmt->bindValue(":setid", $id, PDO::PARAM_STR);}
+        if (isset($id)) {echo "may id"; $stmt->bindValue(":setid", $id, PDO::PARAM_STR); }
+        else { echo "wala id"; }
         $this->execution->execute($stmt);
         $result = $this->execution->getResults();
         http_response_code(200);
