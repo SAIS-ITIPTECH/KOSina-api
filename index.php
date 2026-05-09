@@ -90,9 +90,9 @@ class Main{
             $confirmPaid = new ConfirmPaid();
             $confirmPaid->confirm();
             return null;
-            
+
         } else if ($this->table == "checkpaid") {
-            $checkPaid = new CheckoutSession();
+            $checkPaid = new CheckoutSession(null, null, null);
             $checkPaid->checkPaid($this->id);
             return null;
         }
