@@ -21,7 +21,7 @@ class CheckoutSession{
         ],
         ]);
 
-        return json_decode($response->getBody(), true)["data"]["attributes"]["checkout_url"];
+        return json_decode($response->getBody(), true);
     }
 }
 

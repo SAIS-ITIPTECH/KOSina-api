@@ -82,8 +82,11 @@ class NewOrderQueryBuilder{
 
     private function checkout(){
         $checkout = new CheckoutSession($this->model->getTotalPrice(), $this->model->getRestoname(), $this->model->getOrderId());
-        $url = $checkout->createSession();
-        echo json_encode($url);
+        $result = $checkout->createSession();
+        echo json_encode([
+            "id" => $result["data"]["id"],
+            "url" => $result["data"]["attributes"]["checkout_url"]
+        ]);
     }
 
 }
