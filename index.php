@@ -72,7 +72,6 @@ class Main{
         $req = explode("/", trim($path, "/"));
         $this->table = $req[0] ?? null;
         $this->id = $req[1] ?? null;
-        var_dump(gettype($this->id), $this->id);
     }
 
     private function determine(){
