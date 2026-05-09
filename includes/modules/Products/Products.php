@@ -18,8 +18,6 @@ class Products implements Controller {
     }
 
     public function query(){
-        var_dump(gettype($this->id), $this->id);
-
         switch($_SERVER["REQUEST_METHOD"]){
             case "GET":
                 $this->queryBuilder->get($this->id);
