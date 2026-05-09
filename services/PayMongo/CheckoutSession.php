@@ -31,7 +31,7 @@ class CheckoutSession{
             'authorization' => "Basic ". getenv('PAYMONGO_KEY')
         ],
         ]);
-        echo json_decode($response->getBody(), true);
+        echo $response->getBody();
     }
 }
 
