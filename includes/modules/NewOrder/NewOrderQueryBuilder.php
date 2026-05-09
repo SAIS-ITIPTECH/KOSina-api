@@ -35,7 +35,12 @@ class NewOrderQueryBuilder{
             $this->pdo->rollBack();
             throw $e;
         }
-        if ($this->model->getPaymentMethod() === "cashless") { $this->checkout(); }
+        if ($this->model->getPaymentMethod() === "cashless") { 
+            $this->checkout(); 
+        } else {
+            echo json_encode(["orderId" => $this->model->getOrderId()]);
+        }
+
     }
 
     private function addNewOrder(){
@@ -85,7 +90,8 @@ class NewOrderQueryBuilder{
         $result = $checkout->createSession();
         echo json_encode([
             "id" => $result["data"]["id"],
-            "url" => $result["data"]["attributes"]["checkout_url"]
+            "url" => $result["data"]["attributes"]["checkout_url"],
+            "orderId" => $this->model->getOrderId()
         ]);
     }
 
