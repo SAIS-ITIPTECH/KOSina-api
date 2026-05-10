@@ -31,7 +31,7 @@ class ProductModel {
         $this->name = $name;
         $this->price = $price;
         $this->categoryId = $categoryId;
-        $this->available = ($available == "true");
+        $this->available = ($available === "true");
 
         return true;
     }
@@ -62,8 +62,7 @@ class ProductModel {
     }
 
     private function availableValidator(){
-        $value = $this->validator->checkEmpty("AVAILABLE", $this->userInput["available"] ?? null);
-        var_dump($value, gettype($value));
+        return $this->validator->checkEmpty("AVAILABLE", $this->userInput["available"] ?? null);
     }
 
     private function idValidator($dirtyId){
