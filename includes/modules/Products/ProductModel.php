@@ -62,7 +62,8 @@ class ProductModel {
     }
 
     private function availableValidator(){
-        return $this->validator->checkEmpty("AVAILABLE", $this->userInput["available"] ?? null);
+        $value = $this->validator->checkEmpty("AVAILABLE", $this->userInput["available"] ?? null);
+        var_dump($value, gettext($value));
     }
 
     private function idValidator($dirtyId){
