@@ -31,7 +31,7 @@ class ProductModel {
         $this->name = $name;
         $this->price = $price;
         $this->categoryId = $categoryId;
-        $this->available = ($available === "true");
+        $this->available = ($available == "true");
 
         return true;
     }
