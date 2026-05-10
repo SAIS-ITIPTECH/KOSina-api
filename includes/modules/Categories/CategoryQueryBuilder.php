@@ -39,6 +39,13 @@ class CategoryQueryBuilder{
         $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_STR);
         $this->msg = "{$this->model->getId()} HAS BEEN DELETED";
         $this->execution->execute($stmt);
+
+        $query = "UPDATE product_list SET deleted = true WHERE category_id = :setid";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_STR);
+        $this->msg = "{$this->model->getId()} HAS BEEN DELETED";
+        $this->execution->execute($stmt);
+
         echo json_encode(["status" => "success", "message" => strtoupper($this->msg)]);
     }
 
