@@ -31,6 +31,7 @@ class ConfirmPayment{
     }
 
     public function checkCash($dbCredentials, $id){
+        echo "why0";
         $this->id = $id;
         $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $this->pdo = $database->connectDatabase();

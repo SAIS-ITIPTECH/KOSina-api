@@ -1,6 +1,5 @@
 <?php
 
-//KakosaNiNina11
 // HEADERS
 $allowedDomain = [
     "https://sais-itiptech.github.io/KOSina-Dashboard/",
@@ -93,7 +92,7 @@ class Main{
 
         } else if ($this->table == "confirmCash") {
             $confirmPaid = new ConfirmPayment();
-            echo "cash";
+            echo "casssah";
             $confirmPaid->checkCash($this->getDbCrendentials(), $this->id);
             echo "paided";
             return null;
@@ -121,7 +120,6 @@ class Main{
     }
 
     private function getDbCrendentials(){
-        echo "token";
         $tokenChecker = new TokenChecker();
         $token = $tokenChecker->decodeToken();
         $credentials = new CredentialsGraber($token);
