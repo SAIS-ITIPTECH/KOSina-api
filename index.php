@@ -121,7 +121,6 @@ class Main{
     private function getDbCrendentials(){
         $tokenChecker = new TokenChecker();
         $token = $tokenChecker->decodeToken();
-        echo $token;
         $credentials = new CredentialsGraber($token);
         $credentials->connectCredentialsId();
         return ["dbName" => $credentials->getDbName(), "dbUsername" =>  $credentials->getDbUsername(), "dbPassword" =>  $credentials->getDbPassword()];
