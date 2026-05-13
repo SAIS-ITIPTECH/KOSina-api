@@ -37,7 +37,7 @@ require_once __DIR__ . "/auth/TokenChecker.php";
 require_once __DIR__ . "/auth/TokenChecker.php";
 
 // SERVICES
-require_once __DIR__ . "/services/PayMongo/ConfirmPaid.php";
+require_once __DIR__ . "/services/PayMongo/ConfirmPayment.php";
 require_once __DIR__ . "/services/PayMongo/CheckoutSession.php";
 
 // EXCEPTION HANDLER
@@ -86,9 +86,14 @@ class Main{
             $return->checkToken();
             return null;
 
-        } else if ($this->table == "confirm") {
-            $confirmPaid = new ConfirmPaid();
-            $confirmPaid->confirm();
+        } else if ($this->table == "confirmCashless") {
+            $confirmPaid = new ConfirmPayment();
+            $confirmPaid->checkCashless();
+            return null;
+
+        } else if ($this->table == "confirmCash") {
+            $confirmPaid = new ConfirmPayment();
+            $confirmPaid->checkCash($this->getDbCrendentials(), $this->id);
             return null;
 
         } else if ($this->table == "checkpaid") {
@@ -105,7 +110,7 @@ class Main{
         }
 
         // CONNECT DATABASE
-        $dbCredentials = $this->GetDbCrendentials();
+        $dbCredentials = $this->getDbCrendentials();
         $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $pdo = $database->connectDatabase();
         $execution = new Execution();
@@ -113,7 +118,7 @@ class Main{
         return new $controller($pdo, $execution, $this->id);
     }
 
-    private function GetDbCrendentials(){
+    private function getDbCrendentials(){
         $tokenChecker = new TokenChecker();
         $token = $tokenChecker->decodeToken();
         $credentials = new CredentialsGraber($token);
