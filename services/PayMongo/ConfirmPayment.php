@@ -42,4 +42,33 @@ class ConfirmPayment{
             $stmt->bindValue(":setid", $this->id);
             $stmt->execute();
     }
+
+    private function updateDailySales(){
+        $stmt = $this->pdo->prepare('SELECT daily_sale_id FROM WHERE order_id= :setid');
+        $stmt->bindValue(":setid", $this->id);
+        $stmt->execute();
+        $dailySaleId = $stmt->fetchColumn();
+
+        $stmt = $this->pdo->prepare("
+            UPDATE daily_sales
+            SET total_income = (
+                SELECT SUM(total_price)
+                FROM order_history
+                WHERE order_history.daily_sale_id = :setid1 && paid = 1
+            ),
+            
+            total_sales = (
+                SELECT COUNT(*)
+                FROM order_history
+                WHERE daily_sale_id = :setid2 && paid = 1
+                )
+        
+            WHERE daily_sale_id = :setid3;
+        ");
+        $stmt->bindValue(":setid1", $dailySaleId);
+        $stmt->bindValue(":setid2", $dailySaleId);
+        $stmt->bindValue(":setid3", $dailySaleId);
+        $stmt->execute();
+    }
+
 }

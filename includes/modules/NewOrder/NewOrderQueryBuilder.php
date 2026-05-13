@@ -27,10 +27,8 @@ class NewOrderQueryBuilder{
                 return null;
             }
             $this->updateTotalPrice();
-            $this->updateDailySales();
             $this->pdo->commit();
             
-
         } catch (\Exception $e) {
             $this->pdo->rollBack();
             throw $e;
@@ -79,10 +77,6 @@ class NewOrderQueryBuilder{
         $stmt->bindValue(":setTotalPrice", $this->model->getTotalPrice(), PDO::PARAM_INT);
         $stmt->bindValue(":setid", $this->model->getOrderId(), PDO::PARAM_STR);
         $this->execution->execute($stmt);
-    }
-
-    private function updateDailySales(){
-        $this->dailySalesQueryBuilder->update($this->model->getDailySalesId(), $this->model->getTotalPrice());
     }
 
     private function checkout(){
