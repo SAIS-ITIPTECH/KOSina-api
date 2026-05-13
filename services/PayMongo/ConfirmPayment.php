@@ -53,53 +53,25 @@ class ConfirmPayment{
         $dailySaleId = $stmt->fetchColumn();
 
         $stmt = $this->pdo->prepare("
-            UPDATE daily_sales 
-            SET total_income = CASE
-            WHEN ( 
-                SELECT SUM(total_price) 
-                FROM order_history 
-                WHERE order_history.daily_sale_id = :setid1 && paid = 1
-            ) IS NOT NULL THEN ( 
-                SELECT SUM(total_price) 
-                FROM order_history 
-                WHERE order_history.daily_sale_id = :setid2 && paid = 1
-            )
-            
-            WHEN ( 
-                SELECT SUM(total_price) 
-                FROM order_history 
-                WHERE order_history.daily_sale_id = :setid3 && paid = 1
-            ) IS NULL THEN 0
-            END,
-            
-            total_sales = CASE
-            WHEN (
-                SELECT COUNT(*) 
-                FROM order_history 
-                WHERE daily_sale_id = :setid4 && paid = 1
-            ) IS NOT NULL THEN (
-                SELECT COUNT(*) 
-                FROM order_history 
-                WHERE daily_sale_id = :setid5 && paid = 1
-            )
-            
-            WHEN (
-                SELECT COUNT(*) 
-                FROM order_history 
-                WHERE daily_sale_id = :setid16 && paid = 1
-            ) IS NULL THEN 0
-            END
-          
-            WHERE daily_sale_id = :setid7;
+            UPDATE daily_sales
+            SET 
+                total_income = COALESCE((
+                    SELECT SUM(total_price)
+                    FROM order_history
+                    WHERE daily_sale_id = :setid1 AND paid = 1
+                ), 0),
+
+                total_sales = (
+                    SELECT COUNT(*)
+                    FROM order_history
+                    WHERE daily_sale_id = :setid2 AND paid = 1
+                )
+
+            WHERE daily_sale_id = :setid3;
         ");
         $stmt->bindValue(":setid1", $dailySaleId);
         $stmt->bindValue(":setid2", $dailySaleId);
         $stmt->bindValue(":setid3", $dailySaleId);
-        $stmt->bindValue(":setid4", $dailySaleId);
-        $stmt->bindValue(":setid5", $dailySaleId);
-        $stmt->bindValue(":setid6", $dailySaleId);
-        $stmt->bindValue(":setid7", $dailySaleId);
         $stmt->execute();
     }
-
 }
