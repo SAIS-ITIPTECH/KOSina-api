@@ -92,9 +92,7 @@ class Main{
 
         } else if ($this->table == "confirmCash") {
             $confirmPaid = new ConfirmPayment();
-            echo "casssah";
             $confirmPaid->checkCash($this->getDbCrendentials(), $this->id);
-            echo "paided";
             return null;
 
         } else if ($this->table == "checkpaid") {

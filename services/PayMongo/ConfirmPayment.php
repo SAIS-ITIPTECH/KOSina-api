@@ -31,7 +31,6 @@ class ConfirmPayment{
     }
 
     public function checkCash($dbCredentials, $id){
-        echo "why0";
         $this->id = $id;
         var_dump($this->id,$id);
         var_dump($dbCredentials);
