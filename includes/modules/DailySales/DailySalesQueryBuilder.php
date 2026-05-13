@@ -12,7 +12,7 @@ class DailySalesQueryBuilder{
     ){}
 
     public function get(){
-        $query = "SELECT * FROM daily_sales ORDER BY date ASC";
+        $query = "SELECT * FROM daily_sales ORDER BY date DESC";
         $stmt = $this->pdo->prepare($query);
         $this->execution->execute($stmt);
         $result = $this->execution->getResults();
@@ -30,7 +30,7 @@ class DailySalesQueryBuilder{
     }
 
     public function update($dailySalesId, $totalPrice){
-        $query = "UPDATE daily_sales SET total_income = total_income + :setTotalPrice, total_sales = total_sales + 1 WHERE daily_sale_id = :setid ORDER BY daily_sale_id DESC;";
+        $query = "UPDATE daily_sales SET total_income = total_income + :setTotalPrice, total_sales = total_sales + 1 WHERE daily_sale_id = :setid;";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setid", $dailySalesId, PDO::PARAM_INT);
