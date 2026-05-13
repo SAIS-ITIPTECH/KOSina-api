@@ -38,9 +38,10 @@ class ConfirmPayment{
     }
 
     private function confirm(){
-            $stmt = $this->pdo->prepare('UPDATE order_history SET paid = true WHERE order_id= :setid');
-            $stmt->bindValue(":setid", $this->id);
-            $stmt->execute();
+        $stmt = $this->pdo->prepare('UPDATE order_history SET paid = true WHERE order_id= :setid');
+        $stmt->bindValue(":setid", $this->id);
+        $stmt->execute();
+        $this->updateDailySales();
     }
 
     private function updateDailySales(){
