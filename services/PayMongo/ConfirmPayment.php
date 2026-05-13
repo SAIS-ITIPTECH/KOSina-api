@@ -48,7 +48,7 @@ class ConfirmPayment{
     }
 
     private function updateDailySales(){
-        $stmt = $this->pdo->prepare('SELECT daily_sale_id FROM WHERE order_id= :setid');
+        $stmt = $this->pdo->prepare('SELECT daily_sale_id FROM order_history WHERE order_id = :setid');
         $stmt->bindValue(":setid", $this->id);
         $stmt->execute();
         $dailySaleId = $stmt->fetchColumn();
