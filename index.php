@@ -23,6 +23,8 @@ require_once __DIR__ . "/includes/modules/History/History.php";
 require_once __DIR__ . "/includes/modules/Details/Details.php";
 require_once __DIR__ . "/includes/modules/NewOrder/NewOrder.php";
 require_once __DIR__ . "/includes/modules/DailySales/DailySales.php";
+require_once __DIR__ . "/includes/modules/Misc/ConfirmPayment.php";
+require_once __DIR__ . "/includes/modules/Misc/OrderServed.php";
 
 // TOOLS
 require_once __DIR__ . "/includes/ErrorHandler/ErrorHandler.php";
@@ -36,7 +38,6 @@ require_once __DIR__ . "/auth/TokenChecker.php";
 require_once __DIR__ . "/auth/TokenChecker.php";
 
 // SERVICES
-require_once __DIR__ . "/services/PayMongo/ConfirmPayment.php";
 require_once __DIR__ . "/services/PayMongo/CheckoutSession.php";
 
 // EXCEPTION HANDLER
@@ -101,18 +102,24 @@ class Main{
             return null;
         }
 
+        // CONNECT DATABASE
+        $dbCredentials = $this->getDbCrendentials();
+        $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
+        $pdo = $database->connectDatabase();
+        $execution = new Execution();
+
+        if ($this->table == "served") {
+            $served = new OrderServed($pdo, $execution);
+            $served->served($this->id);
+            return null;
+        }
+
         $controller = $this->tableMap[$this->table] ?? null;
         if (!$controller){
             http_response_code(404);
             echo json_encode(["status" => "error", "message" => strtoupper("$this->table IS NOT A VALID HEADER")]);
             return null;
         }
-
-        // CONNECT DATABASE
-        $dbCredentials = $this->getDbCrendentials();
-        $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
-        $pdo = $database->connectDatabase();
-        $execution = new Execution();
 
         return new $controller($pdo, $execution, $this->id);
     }
