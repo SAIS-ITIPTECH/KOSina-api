@@ -22,7 +22,7 @@ class LiveOrderQueryBuilder{
     public function update($id){
         $query = "
             UPDATE order_history
-            SET served = 1;
+            SET served = 1
             WHERE order_id = :setid;
         ";
 
