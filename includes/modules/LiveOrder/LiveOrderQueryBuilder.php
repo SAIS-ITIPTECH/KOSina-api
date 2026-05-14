@@ -6,7 +6,13 @@ class LiveOrderQueryBuilder{
     public function __construct(private $pdo, private $execution){}
 
     public function get(){
-        $query = "SELECT * FROM order_history WHERE served = 0;";
+        $query = "
+            SELECT order_history.order_id, product_list.name, order_details.quantity
+            FROM order_history
+            INNER JOIN order_details ON order_history.order_id = order_details.order_id
+            INNER JOIN product_list ON order_details.product_id = product_list.product_id
+            WHERE served = 0;
+        ";
         $stmt = $this->pdo->prepare($query);
         $this->execution->execute($stmt);
         http_response_code(200);
