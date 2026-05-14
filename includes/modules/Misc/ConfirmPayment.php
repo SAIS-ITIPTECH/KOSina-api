@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . "/../../includes/Database/CredentialsGraber.php";
-require_once __DIR__ . "/../../includes/Database/Database.php";
+require_once __DIR__ . "/../../Database/CredentialsGraber.php";
+require_once __DIR__ . "/../../Database/Database.php";
 
 class ConfirmPayment{
     private $pdo;

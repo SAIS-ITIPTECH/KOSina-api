@@ -24,7 +24,7 @@ require_once __DIR__ . "/includes/modules/Details/Details.php";
 require_once __DIR__ . "/includes/modules/NewOrder/NewOrder.php";
 require_once __DIR__ . "/includes/modules/DailySales/DailySales.php";
 require_once __DIR__ . "/includes/modules/Misc/ConfirmPayment.php";
-require_once __DIR__ . "/includes/modules/Misc/OrderServed.php";
+require_once __DIR__ . "/includes/modules/LiveOrder/LiveOrder.php";
 
 // TOOLS
 require_once __DIR__ . "/includes/ErrorHandler/ErrorHandler.php";
@@ -57,7 +57,8 @@ class Main{
         "details" => Details::class,
         "neworder" => NewOrder::class,
         "image" => Image::class,
-        "sales" => DailySales::class
+        "sales" => DailySales::class,
+        "liveorder" => LiveOrder::class
     ];
     
     public function start(){
@@ -107,12 +108,6 @@ class Main{
         $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $pdo = $database->connectDatabase();
         $execution = new Execution();
-
-        if ($this->table == "served") {
-            $served = new OrderServed($pdo, $execution);
-            $served->served($this->id);
-            return null;
-        }
 
         $controller = $this->tableMap[$this->table] ?? null;
         if (!$controller){
