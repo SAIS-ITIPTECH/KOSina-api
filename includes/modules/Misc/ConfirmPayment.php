@@ -49,7 +49,6 @@ class ConfirmPayment{
         $stmt->bindValue(":setid", $this->id);
         $stmt->execute();
         $dailySaleId = $stmt->fetchColumn();
-        var_dump($dailySaleId, $this->id);
 
         $stmt = $this->pdo->prepare("
             UPDATE daily_sales
