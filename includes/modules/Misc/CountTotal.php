@@ -6,7 +6,7 @@ require_once __DIR__ . "/../../Database/Database.php";
 class CountTotal{
     private $table;
     private $tableMap = [
-        "categories" => "order_history",
+        "history" => "order_history",
         "products" => "order_details",
         "sales" =>  "daily_sale"
     ];
