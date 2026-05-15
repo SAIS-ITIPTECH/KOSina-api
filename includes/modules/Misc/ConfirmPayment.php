@@ -49,7 +49,7 @@ class ConfirmPayment{
 
         $stmt = $this->pdo->prepare("
             UPDATE daily_sales
-            SET 
+            SET
                 total_income = COALESCE((
                     SELECT SUM(total_price)
                     FROM order_history
@@ -68,7 +68,7 @@ class ConfirmPayment{
         $stmt->bindValue(":setid2", $dailySaleId);
         $stmt->bindValue(":setid3", $dailySaleId);
         $stmt->execute();
-        
+
         http_response_code(200);
         echo json_encode(["status" => "success", "message" => strtoupper("ORDER HAS BEEN PAID")]);
     }
