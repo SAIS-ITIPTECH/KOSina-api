@@ -22,7 +22,7 @@ class CountTotal{
 
     public function validateTable($id){
         $allowed = ["order_history", "order_details", "daily_sale"];
-        if (in_array($allowed, $id)) {
+        if (in_array($id, $allowed)) {
             $this->id = $id;
         }  else {
             http_response_code(422);
