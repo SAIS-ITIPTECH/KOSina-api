@@ -15,7 +15,7 @@ class CountTotal{
 
     public function count(){
         if (!$this->id) { return; }
-        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM '$this->id'");
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM $this->id");
         $this->execution->execute($stmt);
         echo json_encode($this->execution->getResult());
     }
