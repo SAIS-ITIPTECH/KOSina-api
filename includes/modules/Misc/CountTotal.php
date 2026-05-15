@@ -23,7 +23,7 @@ class CountTotal{
         if (!$this->table) { return; }
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM $this->table");
         $this->execution->execute($stmt);
-        echo json_encode($this->execution->getResult());
+        echo json_encode($this->execution->getResults());
     }
 
 }
