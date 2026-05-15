@@ -112,8 +112,8 @@ class Main{
         $pdo = $database->connectDatabase();
         $execution = new Execution();
 
-        if ($this->table == "count") {
-            $counter = new CountTotal($this->id, $pdo, $execution);
+        if ($this->id == "count") {
+            $counter = new CountTotal($this->table, $pdo, $execution);
             $counter->count();
             return null;
         }

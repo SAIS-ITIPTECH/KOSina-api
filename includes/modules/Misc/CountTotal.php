@@ -4,30 +4,26 @@ require_once __DIR__ . "/../../Database/CredentialsGraber.php";
 require_once __DIR__ . "/../../Database/Database.php";
 
 class CountTotal{
-    private $id;
+    private $table;
+    private $tableMap = [
+        "categories" => "order_history",
+        "products" => "order_details",
+        "sales" =>  "daily_sale"
+    ];
+
     public function __construct(
-        $id,
+        $table,
         private $pdo,
         private $execution
     ) {
-        $this->validateTable($id);
+        $this->table = $this->tableMap[$table] ?? false;
     }
 
     public function count(){
-        if (!$this->id) { return; }
-        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM $this->id");
+        if (!$this->table) { return; }
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM $this->table");
         $this->execution->execute($stmt);
         echo json_encode($this->execution->getResult());
     }
 
-    public function validateTable($id){
-        $allowed = ["order_history", "order_details", "daily_sale"];
-        if (in_array($id, $allowed)) {
-            $this->id = $id;
-        }  else {
-            http_response_code(422);
-            echo json_encode(["status" => "error", "message" => strtoupper("The table name is invalid.")]);
-            $this->id = false;
-        }
-    }
 }
