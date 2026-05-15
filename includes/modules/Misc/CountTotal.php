@@ -7,7 +7,7 @@ class CountTotal{
     private $table;
     private $tableMap = [
         "history" => "order_history",
-        "products" => "order_details",
+        "details" => "order_details",
         "sales" =>  "daily_sale"
     ];
 
