@@ -25,9 +25,6 @@ class ConfirmPayment{
             $this->id = $result['data']['attributes']['data']['attributes']['line_items'][0]['description'];
             $this->confirm();
         }
-
-        http_response_code(200);
-        echo json_encode(["status" => "success", "message" => strtoupper("ORDER HAS BEEN PAID")]);
     }
 
     public function checkCash($dbCredentials, $id){
@@ -71,5 +68,8 @@ class ConfirmPayment{
         $stmt->bindValue(":setid2", $dailySaleId);
         $stmt->bindValue(":setid3", $dailySaleId);
         $stmt->execute();
+        
+        http_response_code(200);
+        echo json_encode(["status" => "success", "message" => strtoupper("ORDER HAS BEEN PAID")]);
     }
 }
