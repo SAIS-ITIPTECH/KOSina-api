@@ -24,6 +24,7 @@ require_once __DIR__ . "/includes/modules/Details/Details.php";
 require_once __DIR__ . "/includes/modules/NewOrder/NewOrder.php";
 require_once __DIR__ . "/includes/modules/DailySales/DailySales.php";
 require_once __DIR__ . "/includes/modules/Misc/ConfirmPayment.php";
+require_once __DIR__ . "/includes/modules/Misc/CountTotal.php";
 require_once __DIR__ . "/includes/modules/LiveOrder/LiveOrder.php";
 
 // TOOLS
@@ -50,6 +51,7 @@ $dotenv->safeLoad();
 class Main{ 
     private $table;
     private $id;
+    private $page;
     private $tableMap = [
         "categories" => Categories::class,
         "products" => Products::class,
@@ -74,6 +76,7 @@ class Main{
         $req = explode("/", trim($path, "/"));
         $this->table = $req[0] ?? null;
         $this->id = $req[1] ?? null;
+        $this->page = $req[2] ?? null;
     }
 
     private function determine(){
@@ -109,8 +112,14 @@ class Main{
         $pdo = $database->connectDatabase();
         $execution = new Execution();
 
+        if ($this->table == "count") {
+            $counter = new CountTotal($this->id, $pdo, $execution);
+            $counter->count();
+            return null;
+        }
+
         $controller = $this->tableMap[$this->table] ?? null;
-        if (!$controller){
+        if (!$controller) {
             http_response_code(404);
             echo json_encode(["status" => "error", "message" => strtoupper("$this->table IS NOT A VALID HEADER")]);
             return null;
