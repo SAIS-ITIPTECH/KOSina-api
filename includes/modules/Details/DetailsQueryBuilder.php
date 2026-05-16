@@ -19,7 +19,7 @@
                 ON product_list.product_id = order_details.product_id
                 WHERE DATE(order_date) = DATE(:setDateLimit)
                 ORDER BY order_id DESC
-                LIMIT 50 offset = :setLimit
+                LIMIT 50 offset = :setLimit;
             ";
 
             $stmt = $this->pdo->prepare($query);
