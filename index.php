@@ -108,13 +108,18 @@ class Main{
             return null;
         }
 
+        var_dump(1);
+
         // CONNECT DATABASE
         $dbCredentials = $this->getDbCrendentials();
         $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $pdo = $database->connectDatabase();
         $execution = new Execution();
 
+        var_dump(2);
+
         if ($this->id == "count") {
+            var_dump(3);
             $counter = new CountTotal($this->table, $pdo, $execution);
             $counter->count($this->datePage);
             return null;
