@@ -27,7 +27,7 @@ class Validation{
             echo json_encode(["status" => "error", "message" => strtoupper("$column SHOULD BE A NUMBER!")]);
             return null;
         }
-        return $value;-
+        return $value;
     }
 
     public function checkBoolean($column, $value){
