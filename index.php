@@ -78,7 +78,7 @@ class Main{
         $this->table = $req[0] ?? null;
         $this->id = $req[1] ?? null;
         $this->datePage = $req[2] ?? false;
-        $this->page = $req[3] ?? false;
+        $this->page = (int) $req[3] ?? false;
     }
 
     private function determine(){
