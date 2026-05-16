@@ -79,7 +79,8 @@ class Main{
         $this->id = $req[1] ?? null;
         $this->datePage = ($req[2] != "null" || isset($req[2])) ? $req[2] : null;
         $this->page = ($req[3] != "null" || isset($req[3])) ? (int) $req[3] : null;
-        var_dump("0", $req[3]);
+        var_dump("0", $req[3], $req[2]);
+        var_dump("7", $this->datePage, $this->datePage);
     }
 
     private function determine(){
