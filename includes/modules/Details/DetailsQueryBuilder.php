@@ -13,7 +13,7 @@
                 $query = "
                     SELECT order_details.*, product_list.name
                     FROM order_details
-                    LEFT JOIN
+                    LEFT JOIN product_list
                     ON product_list.product_id = order_details.product_id
                     ORDER BY order_id DESC
                 ";
@@ -32,7 +32,7 @@
                 $query =  "
                     SELECT order_details.*, product_list.name
                     FROM order_details
-                    LEFT JOIN
+                    LEFT JOIN product_list
                     ON product_list.product_id = order_details.product_id
                     WHERE DATE(order_date) = DATE(:setDateLimit)
                     ORDER BY order_id DESC
