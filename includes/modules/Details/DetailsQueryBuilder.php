@@ -8,8 +8,8 @@
 
         public function __construct(private $model, private $pdo, private $execution){}
 
-        public function get($datePage = false, $page = false){
-            if (!$datePage && !$page) {
+        public function get($datePage, $page){
+            if ($datePage === null && $page === null ) {
                 $query = "
                     SELECT order_details.*, product_list.name
                     FROM order_details

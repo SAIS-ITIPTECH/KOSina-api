@@ -57,14 +57,14 @@ class DetailsModel {
     }
 
     public function datePageValidator($dirtyDatePage){
-        if(!$this->validator->checkEmpty("DATE PAGE", $dirtyDatePage)) { return false; }
-        if(!$this->validator->checkSpecial("DATE PAGE", $dirtyDatePage, '/[^a-zA-Z0-9\-]/')) { return false; }
+        if($this->validator->checkEmpty("DATE PAGE", $dirtyDatePage) === null) { return false; }
+        if($this->validator->checkSpecial("DATE PAGE", $dirtyDatePage, '/[^a-zA-Z0-9\-]/') === null) { return false; }
         return true;
     }
 
     public function pageValidator($dirtyPage){
-        if(!$this->validator->checkEmpty("PAGE", $dirtyPage)) { return false; }
-        if(!$this->validator->checkNumber("PAGE", $dirtyPage)) { return false; }
+        if($this->validator->checkEmpty("PAGE", $dirtyPage) === null) { return false; }
+        if($this->validator->checkNumber("PAGE", $dirtyPage) === null) { return false; }
         return true;
     }
 
