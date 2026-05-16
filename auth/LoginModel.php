@@ -26,7 +26,7 @@ class LoginModel{
         return true;
     }
 
-
+ 
     public function identifyPassword(){
         if (!password_verify($this->password, $this->dbPassword)){ return false; }
         return true;
@@ -35,7 +35,7 @@ class LoginModel{
     public function validateInputs(){
         $validation = new Validation();
         if ($validation->checkEmpty("USERNAME",$this->username) == null) { return null; }
-        if ($validation->checkSpecial("USERNAME",$this->username) == null) { return null; }
+        if ($validation->checkSpecial("USERNAME",$this->username, '/[^a-zA-Z0-9 _\-.]/') == null) { return null; }
         if ($validation->checkEmpty("PASSWORD",$this->password) == null) { return null; }
         return true;
     }
