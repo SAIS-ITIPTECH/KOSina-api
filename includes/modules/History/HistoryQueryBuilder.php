@@ -9,7 +9,7 @@ class HistoryQueryBuilder{
 
     public function get($datePage = false, $page = false){
         var_dump($datePage, $page);
-        if (!$datePage && !$page) {
+        if ($datePage == false || $page == false ) {
             $query = "
                 SELECT order_history.*, daily_sales.daily_sale_id
                 FROM order_history
