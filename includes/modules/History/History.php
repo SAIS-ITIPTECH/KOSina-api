@@ -15,6 +15,7 @@ class History implements Controller {
     ){} 
 
     public function buildModel(){
+        var_dump("h", $this->datePage, $this->page);
         $model = new HistoryModel();
         $this->queryBuilder = new HistoryQueryBuilder($model, $this->pdo, $this->execution);
     }
