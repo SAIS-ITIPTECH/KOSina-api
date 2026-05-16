@@ -2,7 +2,8 @@
 
 class Validation{
     public function checkEmpty($column, $value){
-        if(!isset($value) || $value == ""){
+        var_dump("2", $value);
+        if(!isset($value) || $value === ""){
             http_response_code(422);
             echo json_encode(["status" => "error", "message" => strtoupper("$column IS EMPTY!")]);
             return null;

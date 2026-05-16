@@ -8,7 +8,7 @@ class HistoryQueryBuilder{
     public function __construct(private $model, private $pdo, private $execution){}
 
     public function get($datePage = false, $page = false){
-        if ($datePage === "" || $page === "" ) {
+        if ($datePage === false || $page === false ) {
             $query = "
                 SELECT order_history.*, daily_sales.daily_sale_id
                 FROM order_history
@@ -26,6 +26,7 @@ class HistoryQueryBuilder{
         } else {
             if(!$this->model->datePageValidator($datePage)){return;}
             if(!$this->model->pageValidator($page)){return;}
+            echo "still runs";
             $query =  "
                 SELECT order_history.*, daily_sales.daily_sale_id
                 FROM order_history
