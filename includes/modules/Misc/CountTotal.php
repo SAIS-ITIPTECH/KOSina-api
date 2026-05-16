@@ -25,10 +25,11 @@ class CountTotal{
         if (!$this->table) { return; }
         if (!$this->validateDatePage($datePage)) { return; }
 
-        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM $this->table WHERE DATE(order_date) = DATE(:setDateLimit)");
-        $stmt->bindValue(":setDateLimit", $datePage);
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) AS total FROM $this->table WHERE DATE(order_date) = DATE(:setDateLimit)");
+        $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
         $this->execution->execute($stmt);
-        echo json_encode($this->execution->getResults());
+        $result = $this->execution->getResults();
+        echo json_encode($result[0]);
     }
 
     private function validateDatePage($datePage){
