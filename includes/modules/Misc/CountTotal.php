@@ -5,10 +5,21 @@ require_once __DIR__ . "/../../Database/Database.php";
 require_once __DIR__ . "/../../Validation/Validation.php";
 
 class CountTotal{
-    private $table;
+    private $query;
     private $tableMap = [
-        "history" => "order_history",
-        "details" => "order_details",
+        "history" => "
+            SELECT COUNT(*) AS total 
+            FROM order_history
+            WHERE DATE(order_date) = DATE(:setDateLimit)",
+
+        "details" => "
+            SELECT COUNT(*) AS total
+            FROM order_details
+            LEFT JOIN order_history
+            ON order_history.order_id = order_details.order_id
+            WHERE DATE(order_date) = DATE(:setDateLimit)
+        ",
+            
         "sales" =>  "daily_sale"
     ];
 
@@ -18,15 +29,15 @@ class CountTotal{
         private $execution
     ) {
         var_dump(5);
-        $this->table = $this->tableMap[$table] ?? false;
+        $this->query = $this->tableMap[$table] ?? false;
     }
 
     public function count($datePage){
-        var_dump(6, $this->table);
-        if (!$this->table) { return; }
+        var_dump(6);
+        if (!$this->query) { return; }
         if (!$this->validateDatePage($datePage)) { return; }
 
-        $stmt = $this->pdo->prepare("SELECT COUNT(*) AS total FROM $this->table WHERE DATE(order_date) = DATE(:setDateLimit)");
+        $stmt = $this->pdo->prepare($this->query);
         $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
         $this->execution->execute($stmt);
         $result = $this->execution->getResults();
