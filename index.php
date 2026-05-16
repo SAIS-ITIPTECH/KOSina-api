@@ -79,6 +79,8 @@ class Main{
         $this->id = $req[1] ?? null;
         $this->datePage = $req[2] ?? null;
         $this->page = $req[3] ?? null;
+
+        var_dump($this->datePage, $this->page);
     }
 
     private function determine(){
