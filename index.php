@@ -77,8 +77,8 @@ class Main{
         $req = explode("/", trim($path, "/"));
         $this->table = $req[0] ?? null;
         $this->id = $req[1] ?? null;
-        $this->datePage = $req[2] ?? null;
-        $this->page = $req[3] ?? null;
+        $this->datePage = $req[2] ?? false;
+        $this->page = $req[3] ?? false;
     }
 
     private function determine(){

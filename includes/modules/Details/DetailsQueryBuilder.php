@@ -25,6 +25,7 @@
                 echo json_encode($result);
 
             } else {
+                
                 if(!$this->model->datePageValidator($datePage)){return;}
                 if(!$this->model->pageValidator($page)){return;}
 
