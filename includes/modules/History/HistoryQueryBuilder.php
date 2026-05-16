@@ -7,11 +7,11 @@ class HistoryQueryBuilder{
     
     public function __construct(private $model, private $pdo, private $execution){}
 
-    public function get($datePage, $page){
+    public function get($datePage = false, $page = false){
         if(!$this->model->datePageValidator($datePage)){return;}
         if(!$this->model->pageValidator($page)){return;}
 
-       $query = "
+       $query = (!$datePage && !$page) ? "
             SELECT order_history.*, daily_sales.daily_sale_id
             FROM order_history
             LEFT JOIN daily_sales
@@ -19,8 +19,14 @@ class HistoryQueryBuilder{
             WHERE DATE(order_date) = DATE(:setDateLimit)
             ORDER BY order_id DESC
             LIMIT 50 offset :setLimit;
+        " : "
+            SELECT order_history.*, daily_sales.daily_sale_id
+            FROM order_history
+            LEFT JOIN daily_sales
+            ON order_history.daily_sale_id = daily_sales.daily_sale_id
+            ORDER BY order_id DESC
         ";
-
+        var_dump($datePage, $page);
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
         $stmt->bindValue(":setLimit", $page, PDO::PARAM_INT);

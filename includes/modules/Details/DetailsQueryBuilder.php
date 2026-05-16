@@ -8,11 +8,11 @@
 
         public function __construct(private $model, private $pdo, private $execution){}
 
-        public function get($datePage, $page){
+        public function get($datePage = false, $page = false){
             if(!$this->model->datePageValidator($datePage)){return;}
             if(!$this->model->pageValidator($page)){return;}
 
-            $query = "
+            $query = (!$datePage && !$page) ? "
                 SELECT order_details.*, product_list.name
                 FROM order_details
                 LEFT JOIN
@@ -20,7 +20,13 @@
                 WHERE DATE(order_date) = DATE(:setDateLimit)
                 ORDER BY order_id DESC
                 LIMIT 50 offset :setLimit;
-            ";
+            " : "
+           SELECT order_details.*, product_list.name
+                FROM order_details
+                LEFT JOIN
+                ON product_list.product_id = order_details.product_id
+                ORDER BY order_id DESC
+        ";
 
             $stmt = $this->pdo->prepare($query);
             $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
