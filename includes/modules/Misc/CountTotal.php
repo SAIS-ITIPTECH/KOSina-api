@@ -41,5 +41,6 @@ class CountTotal{
         if ($validation->checkEmpty("DATE PAGE", $datePage) === null) { return false; }
         if ($validation->checkSpecial("DATE PAGE", $datePage, '/[^a-zA-Z0-9\-]/') === null) { return false; }
         var_dump(3, $datePage);
+        return true;
     }
 }
