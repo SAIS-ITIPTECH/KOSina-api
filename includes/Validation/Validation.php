@@ -21,7 +21,7 @@ class Validation{
 
     public function checkNumber($column, $value){
         var_dump("1", $value);
-        if(is_int($value)){
+        if(!is_int($value)){
             http_response_code(422);
             echo json_encode(["status" => "error", "message" => strtoupper("$column SHOULD BE A NUMBER!")]);
             return null;
