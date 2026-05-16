@@ -8,7 +8,7 @@ class HistoryQueryBuilder{
     public function __construct(private $model, private $pdo, private $execution){}
 
     public function get($datePage = false, $page = false){
-        var_dump($datePage, $page);
+        
         if (!$datePage && !$page) {
             $query = "
                 SELECT order_history.*, daily_sales.daily_sale_id
@@ -38,7 +38,6 @@ class HistoryQueryBuilder{
                 LIMIT 50 offset :setLimit;
             " ;
 
-            var_dump($datePage, $page);
             $stmt = $this->pdo->prepare($query);
             $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
             $stmt->bindValue(":setLimit", $page, PDO::PARAM_INT);
