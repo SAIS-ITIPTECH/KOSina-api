@@ -62,8 +62,11 @@ class HistoryModel {
     }
 
     public function pageValidator($dirtyPage){
+        echo $dirtyPage;
         if(!$this->validator->checkEmpty("PAGE", $dirtyPage)) { return false; }
+        echo "what";
         if(!$this->validator->checkNumber("PAGE", $dirtyPage)) { return false; }
+        echo "tf";
         return true;
     }
 
