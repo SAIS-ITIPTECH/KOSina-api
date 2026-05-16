@@ -57,21 +57,13 @@ class DetailsModel {
     }
 
     public function datePageValidator($dirtyDatePage){
-        if(empty($dirtyDatePage) || !filter_var($dirtyDatePage, FILTER_VALIDATE_INT)){
-            http_response_code(422);
-            echo json_encode(["status" => "error", "message" => strtoupper("The date is invalid. Value: {$dirtyDatePage}")]);
-            return false;
-        }
+        if(!$this->validator->checkEmpty("DATE PAGE", $dirtyDatePage)) { return false; }
         if(!$this->validator->checkSpecial("DATE PAGE", $dirtyDatePage, '/[^a-zA-Z0-9\-]/')) { return false; }
         return true;
     }
 
     public function pageValidator($dirtyPage){
-        if(empty($dirtyPage) || !filter_var($dirtyPage, FILTER_VALIDATE_INT)){
-            http_response_code(422);
-            echo json_encode(["status" => "error", "message" => strtoupper("The page is invalid. Value: {$dirtyPage}")]);
-            return false;
-        }
+        if(!$this->validator->checkEmpty("PAGE", $dirtyPage)) { return false; }
         if(!$this->validator->checkNumber("PAGE", $dirtyPage)) { return false; }
         return true;
     }
