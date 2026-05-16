@@ -12,10 +12,10 @@ class HistoryQueryBuilder{
         if(!$this->model->pageValidator($page)){return;}
 
        $query = "
-            SELECT order_history.*, daily_sales.daily_sale_id 
-            FROM order_history 
-            LEFT JOIN daily_sales 
-            ON order_history.daily_sale_id = daily_sales.daily_sale_id 
+            SELECT order_history.*, daily_sales.daily_sale_id
+            FROM order_history
+            LEFT JOIN daily_sales
+            ON order_history.daily_sale_id = daily_sales.daily_sale_id
             WHERE DATE(order_date) = DATE(:setDateLimit)
             LIMIT 50 offset = :setLimit
             ORDER BY order_id DESC;"

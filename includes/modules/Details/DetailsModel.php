@@ -49,7 +49,7 @@ class DetailsModel {
     public function idValidator($dirtyId){
         if(empty($dirtyId) || !filter_var($dirtyId, FILTER_VALIDATE_INT)){
             http_response_code(422);
-            echo json_encode(["status" => "error", "message" => strtoupper("The item ID is invalid.")]);
+            echo json_encode(["status" => "error", "message" => strtoupper("The date is invalid.")]);
             return false;
         }
         if(!$this->validator->checkSpecial("CTATEGORY ID", $dirtyId, '/[^a-zA-Z0-9\-]/')) { return false; }
@@ -59,7 +59,7 @@ class DetailsModel {
     public function datePageValidator($dirtyDatePage){
         if(empty($dirtyDatePage) || !filter_var($dirtyDatePage, FILTER_VALIDATE_INT)){
             http_response_code(422);
-            echo json_encode(["status" => "error", "message" => strtoupper("The item ID is invalid.")]);
+            echo json_encode(["status" => "error", "message" => strtoupper("The date is invalid. Value: {$dirtyDatePage}")]);
             return false;
         }
         if(!$this->validator->checkSpecial("DATE PAGE", $dirtyDatePage, '/[^a-zA-Z0-9\-]/')) { return false; }
@@ -69,7 +69,7 @@ class DetailsModel {
     public function pageValidator($dirtyPage){
         if(empty($dirtyPage) || !filter_var($dirtyPage, FILTER_VALIDATE_INT)){
             http_response_code(422);
-            echo json_encode(["status" => "error", "message" => strtoupper("The item ID is invalid.")]);
+            echo json_encode(["status" => "error", "message" => strtoupper("The page is invalid. Value: {$dirtyPage}")]);
             return false;
         }
         if(!$this->validator->checkNumber("PAGE", $dirtyPage)) { return false; }
