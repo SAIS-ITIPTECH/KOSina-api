@@ -25,6 +25,7 @@ class Validation{
             echo json_encode(["status" => "error", "message" => strtoupper("$column SHOULD BE A NUMBER!")]);
             return null;
         }
+        echo"success";
         return $value;
     }
 
