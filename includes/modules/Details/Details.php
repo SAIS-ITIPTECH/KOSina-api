@@ -9,18 +9,20 @@ class Details implements Controller {
     public function __construct(
         private $pdo,
         private $execution,
-        private $id
+        private $id,
+        private $datePage,
+        private $page
     ){}
 
     public function buildModel(){
         $model = new DetailsModel();
         $this->queryBuilder = new DetailsQueryBuilder($model, $this->pdo, $this->execution);
     }
-
+ 
     public function query(){
         switch($_SERVER["REQUEST_METHOD"]){
             case "GET":
-                $this->queryBuilder->get();
+                $this->queryBuilder->get($this->datePage, $this->page);
                 break;
 
             case "PATCH":

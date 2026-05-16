@@ -41,7 +41,7 @@ class CategoryModel{
 
     private function catValidator(){
         $value = $this->validator->checkEmpty("CATEGORY ID", $this->userInput["categoryId"] ?? null);
-        if(isset($value)) { $value = $this->validator->checkSpecial("CATEGORY ID", $value); }
+        if(isset($value)) { $value = $this->validator->checkSpecial("CATEGORY ID", $value, '/[^a-zA-Z0-9 _\-.]/'); }
         return $value;
     }
 

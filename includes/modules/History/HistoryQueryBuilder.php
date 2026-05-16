@@ -7,9 +7,23 @@ class HistoryQueryBuilder{
     
     public function __construct(private $model, private $pdo, private $execution){}
 
-    public function get(){
-       $query = "SELECT order_history.*, daily_sales.daily_sale_id FROM order_history LEFT JOIN daily_sales ON order_history.daily_sale_id = daily_sales.daily_sale_id ORDER BY order_id DESC";
+    public function get($datePage, $page){
+        if(!$this->model->datePageValidator($datePage)){return;}
+        if(!$this->model->pageValidator($page)){return;}
+
+       $query = "
+            SELECT order_history.*, daily_sales.daily_sale_id 
+            FROM order_history 
+            LEFT JOIN daily_sales 
+            ON order_history.daily_sale_id = daily_sales.daily_sale_id 
+            WHERE DATE(order_date) = DATE(:setDateLimit)
+            LIMIT 50 offset = :setLimit
+            ORDER BY order_id DESC;"
+        ;
+
         $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
+        $stmt->bindValue(":setLimit", $page, PDO::PARAM_STR);
         $this->execution->execute($stmt);
         $result = $this->execution->getResults();
         http_response_code(200);
@@ -17,15 +31,16 @@ class HistoryQueryBuilder{
     }
 
     public function update($id){
-        if(!$this->model->validateId($id)){return;}
+        if(!$this->model->idValidator($id)){return;}
 
-        $query = "  UPDATE order_history
-                    SET total_price = :setTotalPrice, paid = :setPaid, payment_method = :setPaymentMethod
-                    WHERE order_id = :setid;
-                    ";
+        $query = "
+            UPDATE order_history
+            SET total_price = :setTotalPrice, paid = :setPaid, payment_method = :setPaymentMethod
+            WHERE order_id = :setid;
+        ";
 
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_STR);
+        $stmt->bindValue(":setid", $id, PDO::PARAM_STR);
         $this->superBind($stmt, "HAS BEEN UPDATED");
     }
 
@@ -34,8 +49,8 @@ class HistoryQueryBuilder{
 
         $query = "DELETE FROM order_history WHERE order_id = :setId";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_INT);
-        $this->msg = "{$this->model->getId()} has been deleted.";
+        $stmt->bindValue(":setId", $id, PDO::PARAM_INT);
+        $this->msg = "{$id} has been deleted.";
         http_response_code(200);
         echo json_encode(["status" => "success", "message" => strtoupper($this->msg)]);
     }

@@ -51,6 +51,7 @@ $dotenv->safeLoad();
 class Main{ 
     private $table;
     private $id;
+    private $datePage;
     private $page;
     private $tableMap = [
         "categories" => Categories::class,
@@ -76,7 +77,8 @@ class Main{
         $req = explode("/", trim($path, "/"));
         $this->table = $req[0] ?? null;
         $this->id = $req[1] ?? null;
-        $this->page = $req[2] ?? null;
+        $this->datePage = $req[2] ?? null;
+        $this->page = $req[3] ?? null;
     }
 
     private function determine(){
@@ -125,7 +127,7 @@ class Main{
             return null;
         }
 
-        return new $controller($pdo, $execution, $this->id);
+        return new $controller($pdo, $execution, $this->id, $this->datePage, $this->page);
     }
 
     private function getDbCrendentials(){

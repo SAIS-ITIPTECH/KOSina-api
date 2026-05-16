@@ -10,8 +10,8 @@ class Validation{
         return $value;
     }
 
-    public function checkSpecial($column, $value){
-        if (!isset($value) || preg_match('/[^a-zA-Z0-9 _\-.]/', $value)) {
+    public function checkSpecial($column, $value, $match){
+        if (!isset($value) || preg_match($match, $value)) {
             http_response_code(422);
             echo json_encode(["status" => "error", "message" => strtoupper("$column CANT CONTAIN SPECIAL CHARACTERS!")]);
             return null;

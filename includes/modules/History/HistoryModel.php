@@ -8,7 +8,6 @@ class HistoryModel {
     private $paymentMethod;
     private $userInput;
     private $validator;
-    private $id;
 
     public function __construct(){
         $this->validator = new Validation();
@@ -30,13 +29,6 @@ class HistoryModel {
         return true;
     }
 
-    public function validateId($dirtyId){
-        $id = $this->idValidator($dirtyId);
-        if(!$id) return false;
-        $this->id = $id;
-        return true;
-    }
-
     private function totalPriceValidator(){
         $value = $this->validator->checkEmpty("TOTAL PRICE", $this->userInput["totalPrice"] ?? null);
         if(isset($value)) $value = $this->validator->checkNumber("ORDER ID", $value);
@@ -53,17 +45,37 @@ class HistoryModel {
         return $value;
     }
 
-    private function idValidator($dirtyId){
+    public function idValidator($dirtyId){
         if(empty($dirtyId) || !filter_var($dirtyId, FILTER_VALIDATE_INT)){
             http_response_code(422);
             echo json_encode(["status" => "error", "message" => strtoupper("The item ID is invalid.")]);
             return false;
         }
-        return $dirtyId;
+        if(!$this->validator->checkSpecial("CTATEGORY ID", $dirtyId, '/[^a-zA-Z0-9\-]/')) { return false; }
+        return true;
+    }
+
+    public function datePageValidator($dirtyDatePage){
+        if(empty($dirtyDatePage) || !filter_var($dirtyDatePage, FILTER_VALIDATE_INT)){
+            http_response_code(422);
+            echo json_encode(["status" => "error", "message" => strtoupper("The item ID is invalid.")]);
+            return false;
+        }
+        if(!$this->validator->checkSpecial("DATE PAGE", $dirtyDatePage, '/[^a-zA-Z0-9\-]/')) { return false; }
+        return true;
+    }
+
+    public function pageValidator($dirtyPage){
+        if(empty($dirtyPage) || !filter_var($dirtyPage, FILTER_VALIDATE_INT)){
+            http_response_code(422);
+            echo json_encode(["status" => "error", "message" => strtoupper("The item ID is invalid.")]);
+            return false;
+        }
+        if(!$this->validator->checkNumber("PAGE", $dirtyPage)) { return false; }
+        return true;
     }
 
     public function getTotalPrice(){ return $this->totalPrice; }
     public function getPaid(){ return $this->paid; }
     public function getPaymentMethod(){ return $this->paymentMethod; }
-    public function getId(){ return $this->id; }
 }
