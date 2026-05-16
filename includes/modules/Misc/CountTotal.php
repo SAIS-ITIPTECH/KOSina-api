@@ -21,6 +21,7 @@ class CountTotal{
     }
 
     public function count($datePage){
+        var_dump(1, $datePage);
         if (!$this->table) { return; }
         if (!$this->validateDatePage($datePage)) { return; }
 
