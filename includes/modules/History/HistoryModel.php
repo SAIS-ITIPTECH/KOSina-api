@@ -56,9 +56,10 @@ class HistoryModel {
     }
 
     public function datePageValidator($dirtyDatePage){
+        echo "ruinning";
         if($this->validator->checkEmpty("DATE PAGE", $dirtyDatePage) === null) { return false; }
         if($this->validator->checkSpecial("DATE PAGE", $dirtyDatePage, '/[^a-zA-Z0-9\-]/') === null) { return false; }
-        return false;
+        return true;
     }
 
     public function pageValidator($dirtyPage){
