@@ -116,7 +116,7 @@ class Main{
 
         if ($this->id == "count") {
             $counter = new CountTotal($this->table, $pdo, $execution);
-            $counter->count();
+            $counter->count($this->datePage);
             return null;
         }
 

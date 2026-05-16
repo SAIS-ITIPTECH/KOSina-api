@@ -2,6 +2,7 @@
 
 require_once __DIR__ . "/../../Database/CredentialsGraber.php";
 require_once __DIR__ . "/../../Database/Database.php";
+require_once __DIR__ . "/../../Validation/Validation.php";
 
 class CountTotal{
     private $table;
@@ -19,11 +20,19 @@ class CountTotal{
         $this->table = $this->tableMap[$table] ?? false;
     }
 
-    public function count(){
+    public function count($datePage){
         if (!$this->table) { return; }
-        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM $this->table");
+        if (!$this->validateDatePage($datePage)) { return; }
+
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM $this->table WHERE DATE(order_date) = DATE(:setDateLimit)");
+        $stmt->bindValue(":setDateLimit", $datePage);
         $this->execution->execute($stmt);
         echo json_encode($this->execution->getResults());
     }
 
+    private function validateDatePage($datePage){
+        $validation = new Validation();
+        if (!$validation->checkEmpty("DATE PAGE", $datePage) === null) { return false; }
+        if (!$validation->checkEmpty("DATE PAGE", $datePage) === null) { return false; }
+    }
 }
