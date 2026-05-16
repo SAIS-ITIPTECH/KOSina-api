@@ -28,12 +28,10 @@ class CountTotal{
         private $pdo,
         private $execution
     ) {
-        var_dump(5);
         $this->query = $this->tableMap[$table] ?? false;
     }
 
     public function count($datePage){
-        var_dump(6);
         if (!$this->query) { return; }
         if (!$this->validateDatePage($datePage)) { return; }
 
