@@ -23,7 +23,7 @@ class HistoryQueryBuilder{
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
-        $stmt->bindValue(":setLimit", $page, PDO::PARAM_STR);
+        $stmt->bindValue(":setLimit", $page, PDO::PARAM_INT);
         $this->execution->execute($stmt);
         $result = $this->execution->getResults();
         http_response_code(200);
