@@ -64,7 +64,7 @@ class HistoryModel {
     public function pageValidator($dirtyPage){
         var_dump("3", $dirtyPage);
         if($this->validator->checkEmpty("PAGE", $dirtyPage) === null) { return false; }
-        if($this->validator->checkNumber("PAGE", $dirtyPage === null)) { return false; }
+        if($this->validator->checkNumber("PAGE", $dirtyPage) === null) { return false; }
         return true;
     }
 
