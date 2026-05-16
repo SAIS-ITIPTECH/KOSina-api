@@ -30,16 +30,16 @@
                 if(!$this->model->pageValidator($page)){return;}
 
                 $query =  "
-                    SELECT order_details.*, product_list.name
+                    SELECT order_details.*, product_list.name, order_history.order_date
                     FROM order_details
                     LEFT JOIN product_list
                     ON product_list.product_id = order_details.product_id
+                    LEFT JOIN order_history
+                    ON order_details.order_id = order_history.order_id
                     WHERE DATE(order_date) = DATE(:setDateLimit)
                     ORDER BY order_id DESC
                     LIMIT 50 offset :setLimit;
-                " ;
-
-                var_dump($datePage, $page);
+                ";
                 $stmt = $this->pdo->prepare($query);
                 $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
                 $stmt->bindValue(":setLimit", $page, PDO::PARAM_INT);
