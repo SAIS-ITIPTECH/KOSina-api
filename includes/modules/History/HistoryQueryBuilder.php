@@ -18,7 +18,7 @@ class HistoryQueryBuilder{
             ON order_history.daily_sale_id = daily_sales.daily_sale_id
             WHERE DATE(order_date) = DATE(:setDateLimit)
             ORDER BY order_id DESC
-            LIMIT 50 offset = :setLimit;
+            LIMIT 50 offset :setLimit;
         ";
 
         $stmt = $this->pdo->prepare($query);
