@@ -8,6 +8,7 @@ class HistoryQueryBuilder{
     public function __construct(private $model, private $pdo, private $execution){}
 
     public function get($datePage = false, $page = false){
+        var_dump($datePage, $page);
         if (!$datePage && !$page) {
             $query = "
                 SELECT order_history.*, daily_sales.daily_sale_id
