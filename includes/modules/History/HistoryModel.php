@@ -65,7 +65,7 @@ class HistoryModel {
         echo $dirtyPage;
         if($this->validator->checkEmpty("PAGE", $dirtyPage) === null) { return false; }
         echo "what";
-        if($this->validator->checkNumber("PAGE", $dirtyPage === null)) { return false; }
+        if($this->validator->checkNumber("PAGE", $dirtyPage) === null) { return false; }
         echo "tf";
         return true;
     }
