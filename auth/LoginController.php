@@ -26,7 +26,7 @@ class LoginController{
         }
 
         $info = $this->query->getUserInfo($this->model->getUsername());
-        $jwt = new JWTMaker($info[0]["account_id"], $info[0]["first_name"] . " " . $info[0]["last_name"] , $info[0]["name"], 60 * 60);
+        $jwt = new JWTMaker($info[0]["account_id"], $info[0]["first_name"] . " " . $info[0]["last_name"] , $info[0]["name"], (60 * 60) * 5);
         $jwt->createToken();
         return;
     }
