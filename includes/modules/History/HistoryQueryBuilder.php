@@ -43,6 +43,7 @@ class HistoryQueryBuilder{
             $stmt->bindValue(":setLimit", $page, PDO::PARAM_INT);
             $this->execution->execute($stmt);
             $result = $this->execution->getResults();
+            echo "lols";
             http_response_code(200);
             echo json_encode($result);
         }
