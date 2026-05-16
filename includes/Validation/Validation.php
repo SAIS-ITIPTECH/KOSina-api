@@ -22,7 +22,7 @@ class Validation{
     public function checkNumber($column, $value){
         echo $value;
         echo"running";
-        if(!isset($value) || filter_var($value, FILTER_VALIDATE_INT) === false){
+        if(filter_var($value, FILTER_VALIDATE_INT) === false){
             http_response_code(422);
             echo json_encode(["status" => "error", "message" => strtoupper("$column SHOULD BE A NUMBER!")]);
             return null;
