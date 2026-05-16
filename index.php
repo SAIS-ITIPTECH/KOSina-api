@@ -77,7 +77,6 @@ class Main{
         $req = explode("/", trim($path, "/"));
         $this->table = $req[0] ?? null;
         $this->id = $req[1] ?? null;
-        var_dump("0", $req[2]);
         $this->datePage = ($req[2] != "null") ? $req[2] : null;
         $this->page = ($req[3] != "null") ? (int) $req[3] : null;
     }
