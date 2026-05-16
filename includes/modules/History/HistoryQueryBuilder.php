@@ -8,8 +8,6 @@ class HistoryQueryBuilder{
     public function __construct(private $model, private $pdo, private $execution){}
 
     public function get($datePage = false, $page = false){
-        echo "lols1";
-        var_dump($datePage, $page);
         if ($datePage === false || $page === false ) {
             $query = "
                 SELECT order_history.*, daily_sales.daily_sale_id
@@ -26,10 +24,8 @@ class HistoryQueryBuilder{
             echo json_encode($result);
 
         } else {
-            var_dump($datePage, $page);
             if(!$this->model->datePageValidator($datePage)){return;}
             if(!$this->model->pageValidator($page)){return;}
-            echo "lols2";
             $query =  "
                 SELECT order_history.*, daily_sales.daily_sale_id
                 FROM order_history
@@ -39,13 +35,11 @@ class HistoryQueryBuilder{
                 ORDER BY order_id DESC
                 LIMIT 50 offset :setLimit;
             " ;
-            echo "lols3";
             $stmt = $this->pdo->prepare($query);
             $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
             $stmt->bindValue(":setLimit", $page, PDO::PARAM_INT);
             $this->execution->execute($stmt);
             $result = $this->execution->getResults();
-            echo "lols4";
             http_response_code(200);
             echo json_encode($result);
         }

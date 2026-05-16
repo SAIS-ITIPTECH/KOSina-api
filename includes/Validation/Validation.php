@@ -20,14 +20,11 @@ class Validation{
     }
 
     public function checkNumber($column, $value){
-        echo $value;
-        echo"running";
         if(!isset($value) && is_int($value)){
             http_response_code(422);
             echo json_encode(["status" => "error", "message" => strtoupper("$column SHOULD BE A NUMBER!")]);
             return null;
         }
-        echo"success";
         return $value;
     }
 
