@@ -56,14 +56,12 @@ class HistoryModel {
     }
 
     public function datePageValidator($dirtyDatePage){
-        var_dump("4", $dirtyDatePage);
         if($this->validator->checkEmpty("DATE PAGE", $dirtyDatePage) === null) { return false; }
         if($this->validator->checkSpecial("DATE PAGE", $dirtyDatePage, '/[^a-zA-Z0-9\-]/') === null) { return false; }
         return true;
     }
 
     public function pageValidator($dirtyPage){
-        var_dump("3", $dirtyPage);
         if($this->validator->checkEmpty("PAGE", $dirtyPage) === null) { return false; }
         if($this->validator->checkNumber("PAGE", $dirtyPage) === null) { return false; }
         return true;

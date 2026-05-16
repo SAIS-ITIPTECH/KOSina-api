@@ -9,6 +9,7 @@ class HistoryQueryBuilder{
 
     public function get($datePage, $page){
         if ($datePage === null && $page === null ) {
+
             $query = "
                 SELECT order_history.*, daily_sales.daily_sale_id
                 FROM order_history
@@ -24,7 +25,6 @@ class HistoryQueryBuilder{
             echo json_encode($result);
 
         } else {
-            var_dump($datePage, $page);
             if(!$this->model->datePageValidator($datePage)){return;}
             if(!$this->model->pageValidator($page)){return;}
             echo "still runs";
