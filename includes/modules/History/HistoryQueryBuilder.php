@@ -24,6 +24,7 @@ class HistoryQueryBuilder{
             echo json_encode($result);
 
         } else {
+            var_dump($datePage $page);
             if(!$this->model->datePageValidator($datePage)){return;}
             if(!$this->model->pageValidator($page)){return;}
             echo "still runs";
