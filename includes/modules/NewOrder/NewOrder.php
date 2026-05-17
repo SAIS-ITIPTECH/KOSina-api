@@ -10,7 +10,9 @@ class NewOrder implements Controller {
     public function __construct(
         private $pdo,
         private $execution,
-        private $id
+        private $id,
+        private $datePage,
+        private $page
     ){}
 
     public function buildModel(){
