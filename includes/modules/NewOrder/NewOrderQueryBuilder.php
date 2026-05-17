@@ -13,9 +13,13 @@ class NewOrderQueryBuilder{
         ){}
 
     public function post(){
+        var_dump(5);
+
         try {
             $this->pdo->beginTransaction();
             $this->model->checkDailySales();
+            var_dump(6);
+
             $good = $this->addNewOrder();
             if(!$good) {
                 $this->pdo->rollBack();
@@ -26,7 +30,11 @@ class NewOrderQueryBuilder{
                 $this->pdo->rollBack();
                 return null;
             }
+            var_dump(7);
+
             $this->updateTotalPrice();
+         var_dump(8);
+
             $this->pdo->commit();
             
         } catch (\Exception $e) {
@@ -34,6 +42,8 @@ class NewOrderQueryBuilder{
             throw $e;
         }
         if ($this->model->getPaymentMethod() === "cashless") { 
+         var_dump(9);
+
             $this->checkout(); 
         } else {
             echo json_encode(["orderId" => $this->model->getOrderId()]);

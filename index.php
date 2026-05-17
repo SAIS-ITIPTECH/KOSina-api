@@ -114,15 +114,16 @@ class Main{
             return null;
         }
 
-
+        var_dump(1);
         // CONNECT DATABASE
         $dbCredentials = $this->getDbCrendentials();
         $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $pdo = $database->connectDatabase();
         $execution = new Execution();
 
+        var_dump(2);
 
-        if ($this->id == "count") {
+        if ($this->id === "count") {
             $counter = new CountTotal($this->table, $pdo, $execution);
             $counter->count($this->datePage);
             return null;
@@ -134,6 +135,7 @@ class Main{
             echo json_encode(["status" => "error", "message" => strtoupper("$this->table IS NOT A VALID HEADER")]);
             return null;
         }
+        var_dump(3);
 
         return new $controller($pdo, $execution, $this->id, $this->datePage, $this->page);
     }
