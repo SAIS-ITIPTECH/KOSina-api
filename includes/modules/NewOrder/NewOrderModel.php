@@ -97,14 +97,14 @@ class NewOrderModel {
 
     private function restoNameValidator(){
         $value = $this->validator->checkEmpty("RESTORANT NAME", $this->userInput["restoName"] ?? null);
-        if(isset($value)) { $value = $this->validator->checkSpecial("RESTORANT NAME", $value); }
+        if(isset($value)) { $value = $this->validator->checkSpecial("RESTORANT NAME", $value, '/[^a-zA-Z0-9 _\-.]/'); }
         return $value;
     }
 
 
     private function paymentMethodValidator(){
         $value = $this->validator->checkEmpty("PAYMENT METHOD", $this->userInput["paymentMethod"] ?? null);
-        if(isset($value)) { $value = $this->validator->checkSpecial("PAYMENT METHOD", $value); }
+        if(isset($value)) { $value = $this->validator->checkSpecial("PAYMENT METHOD", $value, '/[^a-zA-Z0-9 _\-.]/'); }
         return $value;
     }
 

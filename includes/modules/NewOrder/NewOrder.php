@@ -16,12 +16,9 @@ class NewOrder implements Controller {
     ){}
 
     public function buildModel(){
-        var_dump(4);
-        
         $dailySalesQueryBuilder = new DailySalesQueryBuilder($this->pdo, $this->execution);
         $model = new NewOrderModel($this->pdo, $dailySalesQueryBuilder);
         $this->queryBuilder = new NewOrderQueryBuilder($model, $this->pdo, $this->execution, $dailySalesQueryBuilder);
-        
     }
 
     public function query(){
