@@ -12,7 +12,7 @@ $allowedDomains = [
 $origin = $_SERVER["HTTP_ORIGIN"] ?? "";
 
 header("Content-Type: application/json; charset=utf-8");
-header("Access-Control-Allow-Origin: " . (in_array($origin, $allowedDomains) ? $origin : "null"));
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
