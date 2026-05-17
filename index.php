@@ -1,12 +1,18 @@
 <?php
 
 // HEADERS
-$allowedDomain = [
+$allowedDomains = [
     "https://sais-itiptech.github.io/KOSina-Dashboard/",
+    "null", // local HTML files (file://)
+    "http://localhost",
+    "http://localhost:3000", // add whatever port you use
+    "http://127.0.0.1",
 ];
 
+$origin = $_SERVER["HTTP_ORIGIN"] ?? "";
+
 header("Content-Type: application/json; charset=utf-8");
-header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+header("Access-Control-Allow-Origin: " . (in_array($origin, $allowedDomains) ? $origin : "null"));
 header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
