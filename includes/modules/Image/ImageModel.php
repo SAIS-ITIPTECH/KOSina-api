@@ -35,24 +35,24 @@ class ImageModel{
             if (!$imageId) { return false; }
             $this->imageId = $imageId;
         }
- 
+
         return true;
     }
 
     public function productIdValidator(){
-        (int) $value = $this->validator->checkEmpty("PRODUCT ID", $this->userInput["productId"] ?? null);
+        $value = $this->validator->checkEmpty("PRODUCT ID", $this->userInput["productId"] ?? null);
         if(isset($value)) { $value = $this->validator->checkNumber("PRICE", $value); }
         return $value;
     }
 
     public function imageIdValidator(){
-        (int) $value = $this->validator->checkEmpty("Image ID", $this->userInput["imageId"] ?? null);
+        $value = $this->validator->checkEmpty("Image ID", $this->userInput["imageId"] ?? null);
         if(isset($value)) { $value = $this->validator->checkNumber("PRICE", $value); }
         return $value;
     }
 
     public function validateId($id){
-        (int) $value = $this->validator->checkEmpty("Image ID", $id ?? null);
+        $value = $this->validator->checkEmpty("Image ID", $id ?? null);
         if(isset($value)) { $value = $this->validator->checkNumber("PRICE", $value); }
         return $value;
     }

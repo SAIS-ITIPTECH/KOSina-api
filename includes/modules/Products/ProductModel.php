@@ -50,8 +50,7 @@ class ProductModel {
     }
 
     private function priceValidator(){
-        (int) $value = $this->validator->checkEmpty("PRICE", $this->userInput["price"] ?? null);
-        var_dump($value);
+        $value = $this->validator->checkEmpty("PRICE", $this->userInput["price"] ?? null);
         if(isset($value)) { $value = $this->validator->checkNumber("PRICE", $value); }
         return $value;
     }

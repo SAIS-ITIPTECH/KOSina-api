@@ -50,7 +50,7 @@ class CategoryModel{
     }
 
     private function indexValidator(){
-        (int) $value = $this->validator->checkEmpty("INDEX", $this->userInput["displayIndex"] ?? null);
+        $value = $this->validator->checkEmpty("INDEX", $this->userInput["displayIndex"] ?? null);
         if(isset($value)) { $value = $this->validator->checkNumber("INDEX", $value); }
         return $value;
     }
