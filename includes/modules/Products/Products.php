@@ -35,10 +35,12 @@ class Products implements Controller {
                 break;
 
             case "PATCH":
-                error_log("update");
-
+                
+error_log("update1");
                 if (!$this->checkRole()) return;
+                error_log("update2");
                 if (!$this->checkId()) return;
+                error_log("update3");
                 $this->queryBuilder->update($this->id);
                 break;
 
