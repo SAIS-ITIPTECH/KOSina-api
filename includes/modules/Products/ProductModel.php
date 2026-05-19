@@ -19,7 +19,6 @@ class ProductModel {
     }
 
     public function validateFields(){
-        error_log(json_encode($this->userInput));
         $name = $this->nameValidator();
         if (!$name) { return false; }
         $price = $this->priceValidator();
@@ -27,8 +26,7 @@ class ProductModel {
         $categoryId = $this->categoryIdValidator();
         if (!$categoryId) { return false; }
         $available = $this->availableValidator();
-        if (!$available) { return false; }
-        error_log("{$name}, {$price}, {$categoryId}, {$available}");
+        if ($available === null) { return false; }
         $this->name = $name;
         $this->price = $price;
         $this->categoryId = $categoryId;
