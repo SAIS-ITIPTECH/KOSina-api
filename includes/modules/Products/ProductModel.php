@@ -27,7 +27,7 @@ class ProductModel {
         if (!$categoryId) { return false; }
         $available = $this->availableValidator();
         if (!$available) { return false; }
-
+        error_log("{$name}, {$price}, {$categoryId}, {$available}");
         $this->name = $name;
         $this->price = $price;
         $this->categoryId = $categoryId;

@@ -19,6 +19,7 @@ class Products implements Controller {
     }
 
     public function query(){
+        error_log($this->role);
         switch($_SERVER["REQUEST_METHOD"]){
             case "GET":
                 $this->queryBuilder->get($this->id);
