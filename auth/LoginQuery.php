@@ -14,7 +14,7 @@ class LoginQuery{
     public function getUserInfo($username){
         error_log($username);
         $query = "
-            SELECT accounts.username, accounts.password, accounts.role, clients.name, clients.client_id
+            SELECT accounts.*, accounts.role, clients.name, clients.client_id
             FROM accounts
             JOIN clients ON accounts.client_id = clients.client_id
             WHERE accounts.username = :setusername
