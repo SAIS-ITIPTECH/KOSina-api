@@ -49,7 +49,8 @@ class Categories implements Controller{
     }
     
     private function checkRole(){
-        error_log($this->role, gettype($this->role));
+        error_log($this->role);
+        error_log(gettype($this->role));
         if($this->role != "admin") {
             http_response_code(403);
             echo json_encode(["status" => "error", "message" => strtoupper("ONLY ADMIN CAN MODIFY KIOSK DATA!")]);
