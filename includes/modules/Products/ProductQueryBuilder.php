@@ -34,7 +34,6 @@ class ProductQueryBuilder {
 
     public function update($id){
         if(!$this->model->validateId($id)) return;
-        echo "sdadasdass";
         $query = "UPDATE product_list SET name = :setName, price = :setPrice, category_id = :setCategoryId, available = :setAvailable WHERE product_id = :setid";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_INT);
@@ -53,6 +52,7 @@ class ProductQueryBuilder {
     }
 
     private function superBind($stmt, $secondMessage){
+        error_log("{$this->model->getName()}, {$this->model->getPrice()}, {$this->model->getCategoryId()}, {$this->model->getAvailable()}");
         if(!$this->model->validateFields()) return;
         error_log("{$this->model->getName()}, {$this->model->getPrice()}, {$this->model->getCategoryId()}, {$this->model->getAvailable()}");
         
