@@ -71,6 +71,7 @@ class Main{
     ];
     
     public function start(){
+        error_log("start");
         $this->setTarget();
         $controller = $this->determine();
         if (!isset($controller)){return;}
@@ -88,6 +89,8 @@ class Main{
     }
 
     private function determine(){
+        error_log("1");
+
         if($this->table == "login"){
             $login = new LoginController();
             $login->start();
@@ -114,13 +117,17 @@ class Main{
             return null;
         }
 
+        error_log("2");
 
         // CONNECT DATABASE
         $dbCredentials = $this->getDbCrendentials();
+        error_log(print_r($dbCredentials));
+
         $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $pdo = $database->connectDatabase();
         $execution = new Execution();
 
+        error_log("3");
 
         if ($this->id === "count") {
             $counter = new CountTotal($this->table, $pdo, $execution);
