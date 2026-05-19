@@ -22,21 +22,29 @@ class Products implements Controller {
         error_log($this->role);
         switch($_SERVER["REQUEST_METHOD"]){
             case "GET":
+                error_log("get");
+                
                 $this->queryBuilder->get($this->id);
                 break;
 
             case "POST":
+                error_log("post");
+
                 if (!$this->checkRole()) return;
                 $this->queryBuilder->post();
                 break;
 
             case "PATCH":
+                error_log("update");
+
                 if (!$this->checkRole()) return;
                 if (!$this->checkId()) return;
                 $this->queryBuilder->update($this->id);
                 break;
 
             case "DELETE":
+                error_log("delete");
+
                 if (!$this->checkRole()) return;
                 if (!$this->checkId()) return;
                 $this->queryBuilder->delete($this->id);
