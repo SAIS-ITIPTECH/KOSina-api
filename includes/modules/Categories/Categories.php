@@ -47,7 +47,7 @@ class Categories implements Controller{
                 return null;
         }
     }
-
+    
     private function checkRole(){
         if($this->role != "admin") {
             http_response_code(403);

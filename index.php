@@ -82,7 +82,7 @@ class Main{
         $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
         $req = explode("/", trim($path, "/"));
         $this->table = $req[0] ?? null;
-        $this->id = $req[1] ?? null;
+        $this->id = (isset($req[1]) && $req[1] !== "null") ? $req[1] : null;
         $this->datePage = (isset($req[2]) && $req[2] !== "null") ? $req[2] : null;
         $this->page = (isset($req[3]) && $req[3] !== "null") ? ((int) $req[3]) : null;
     }
