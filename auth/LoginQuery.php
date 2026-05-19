@@ -12,6 +12,7 @@ class LoginQuery{
     }
     
     public function getUserInfo($username){
+        error_log($username);
         $query = "
             SELECT accounts.username, accounts.password, accounts.role, clients.name, clients.client_id
             FROM accounts
