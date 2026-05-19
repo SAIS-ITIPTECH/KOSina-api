@@ -135,7 +135,7 @@ class Main{
             return null;
         }
 
-        return new $controller($pdo, $execution, $this->id, $this->datePage, $this->page, $dbCredentials["role"]);
+        return new $controller($pdo, $execution, $dbCredentials["role"], $this->id, $this->datePage, $this->page, );
     }
 
     private function getDbCrendentials(){

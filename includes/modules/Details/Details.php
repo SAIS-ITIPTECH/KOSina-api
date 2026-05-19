@@ -10,9 +10,9 @@ class Details implements Controller {
         private $pdo,
         private $execution,
         private $id,
+        private $role,
         private $datePage,
         private $page,
-        private $role
     ){}
 
     public function buildModel(){
