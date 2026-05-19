@@ -8,7 +8,8 @@ class DailySales implements Controller{
     public function __construct(
         private $pdo,
         private $execution,
-        private $id
+        private $id,
+        private $role
     ){}
 
     public function buildModel(){
@@ -22,6 +23,8 @@ class DailySales implements Controller{
                 break;
 
             case "DELETE":
+                if (!$this->checkRole()) return;
+                if (!$this->checkId()) return;
                 $this->queryBuilder->delete($this->id);
                 break;
 
@@ -30,5 +33,23 @@ class DailySales implements Controller{
                 echo json_encode(["status" => "error", "message" => strtoupper("Method Not Allowed!!!")]);
                 return null;
         }
+    }
+
+    private function checkRole(){
+        if($this->role != "admin") {
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => strtoupper("ONLY ADMIN CAN MODIFY KIOSK DATA!")]);
+            return false;
+        }
+        return true;
+    }
+
+    private function checkId(){
+        if(!$this->id){
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => strtoupper("THIS METHOD NEEDS AN ID!")]);
+            return false;
+        }
+        return true;
     }
 }

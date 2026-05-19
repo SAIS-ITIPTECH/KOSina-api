@@ -11,8 +11,7 @@ class NewOrder implements Controller {
         private $pdo,
         private $execution,
         private $id,
-        private $datePage,
-        private $page
+        private $role
     ){}
 
     public function buildModel(){
@@ -24,6 +23,7 @@ class NewOrder implements Controller {
     public function query(){
         switch($_SERVER["REQUEST_METHOD"]){
             case "POST":
+                if (!$this->checkRole()) return;
                 $this->queryBuilder->post();
                 break;
 
@@ -34,4 +34,12 @@ class NewOrder implements Controller {
         }
     }
 
+    private function checkRole(){
+        if($this->role != "kiosk") {
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => strtoupper("ONLY KIOSK CAN ADD NEW ORDER!")]);
+            return false;
+        }
+        return true;
+    }
 }

@@ -11,7 +11,8 @@ class Details implements Controller {
         private $execution,
         private $id,
         private $datePage,
-        private $page
+        private $page,
+        private $role
     ){}
 
     public function buildModel(){
@@ -26,20 +27,14 @@ class Details implements Controller {
                 break;
 
             case "PATCH":
-                if(!$this->id){
-                    http_response_code(400);
-                    echo json_encode(["status" => "error", "message" => strtoupper("This method needs an ID.")]);
-                    return;
-                }
+                if (!$this->checkRole()) return;
+                if (!$this->checkId()) return;
                 $this->queryBuilder->update($this->id);
                 break;
 
             case "DELETE":
-                if(!$this->id){
-                    http_response_code(400);
-                    echo json_encode(["status" => "error", "message" => strtoupper("This method needs an ID.")]);
-                    return;
-                }
+                if (!$this->checkRole()) return;
+                if (!$this->checkId()) return;
                 $this->queryBuilder->delete($this->id);
                 break;
 
@@ -48,5 +43,23 @@ class Details implements Controller {
                 echo json_encode(["status" => "error", "message" => strtoupper("Method not allowed.")]);
                 return;
         }
+    }
+    
+    private function checkRole(){
+        if($this->role != "admin") {
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => strtoupper("ONLY ADMIN CAN MODIFY KIOSK DATA!")]);
+            return false;
+        }
+        return true;
+    }
+
+    private function checkId(){
+        if(!$this->id){
+            http_response_code(403);
+            echo json_encode(["status" => "error", "message" => strtoupper("THIS METHOD NEEDS AN ID!")]);
+            return false;
+        }
+        return true;
     }
 }
