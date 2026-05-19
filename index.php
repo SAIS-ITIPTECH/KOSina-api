@@ -117,6 +117,8 @@ class Main{
 
         // CONNECT DATABASE
         $dbCredentials = $this->getDbCrendentials();
+        error_log("role: {$dbCredentials['role']}"); 
+        error_log("address: {$_SERVER['HTTP_REFERER']}");
         $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $pdo = $database->connectDatabase();
         $execution = new Execution();
@@ -143,7 +145,7 @@ class Main{
         $token = $tokenChecker->decodeToken();
         $credentials = new CredentialsGraber($token);
         $credentials->connectCredentialsId();
-        return ["dbName" => $credentials->getDbName(), "dbUsername" =>  $credentials->getDbUsername(), "dbPassword" =>  $credentials->getDbPassword()];
+        return ["dbName" => $credentials->getDbName(), "dbUsername" =>  $credentials->getDbUsername(), "dbPassword" =>  $credentials->getDbPassword(), "role" =>  $credentials->getRole()];
     }
 }
 
