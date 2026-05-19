@@ -121,7 +121,7 @@ class Main{
 
         // CONNECT DATABASE
         $dbCredentials = $this->getDbCrendentials();
-        error_log(print_r($dbCredentials));
+        error_log(json_encode($dbCredentials));
 
         $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $pdo = $database->connectDatabase();

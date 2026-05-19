@@ -46,6 +46,7 @@ class CredentialsGraber{
         $stmt->bindValue(":setid", "$this->id");
         $this->execution->execute($stmt);
         $result = $this->execution->getResults();
+        error_log(json_encode($result));
         $this->dbName = $result[0]["db_name"] ?? null;
         $this->dbUsername = $result[0]["db_username"] ?? null;
         $this->dbPassword = $result[0]["db_password"] ?? null;
