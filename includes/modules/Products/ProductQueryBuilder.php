@@ -54,7 +54,8 @@ class ProductQueryBuilder {
 
     private function superBind($stmt, $secondMessage){
         if(!$this->model->validateFields()) return;
-
+        error_log("{$this->model->getName()}, {$this->model->getPrice()}, {$this->model->getCategoryId()}, {$this->model->getAvailable()}");
+        
         $stmt->bindValue(":setName", $this->model->getName(), PDO::PARAM_STR);
         $stmt->bindValue(":setPrice", $this->model->getPrice());
         $stmt->bindValue(":setCategoryId", $this->model->getCategoryId(), PDO::PARAM_STR);
