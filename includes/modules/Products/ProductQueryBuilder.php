@@ -34,7 +34,7 @@ class ProductQueryBuilder {
 
     public function update($id){
         if(!$this->model->validateId($id)) return;
-        
+        echo "sdadasdass";
         $query = "UPDATE product_list SET name = :setName, price = :setPrice, category_id = :setCategoryId, available = :setAvailable WHERE product_id = :setid";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_INT);
