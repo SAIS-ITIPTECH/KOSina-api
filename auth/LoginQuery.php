@@ -12,7 +12,12 @@ class LoginQuery{
     }
     
     public function getUserInfo($username){
-        $query = "SELECT * FROM accounts JOIN clients ON accounts.client_id = clients.client_id WHERE accounts.username = :setusername;";
+        $query = "
+            SELECT accounts.username, accounts.password, accounts.role, clients.name, clients.client_id
+            FROM accounts
+            JOIN clients ON accounts.client_id = clients.client_id 
+            WHERE accounts.username = :setusername
+        ";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setusername", $username, PDO::PARAM_STR);
         $this->execution->execute($stmt);

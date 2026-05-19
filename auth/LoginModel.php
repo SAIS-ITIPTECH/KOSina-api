@@ -9,6 +9,7 @@ class LoginModel{
     private $password;
     private $dbUsername;
     private $dbPassword;
+    private $role;
 
     public function __construct(){
         header("Content-Type: application/json; charset=utf-8");
@@ -25,7 +26,6 @@ class LoginModel{
         $this->dbPassword = $result[0]["password"];
         return true;
     }
-
  
     public function identifyPassword(){
         if (!password_verify($this->password, $this->dbPassword)){ return false; }

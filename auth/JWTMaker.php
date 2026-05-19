@@ -10,8 +10,8 @@ class JWTMaker{
         private $clientId,
         private $clientName,
         private $restoName,
+        private $role,
         private $expiry
-        
     ){}
 
     public function createToken(){
@@ -27,6 +27,6 @@ class JWTMaker{
             getenv("JWT_KEY"),
             'HS256'
         );
-        echo json_encode(["token" => $token, "name" => $this->clientName, "resto" => $this->restoName, "expiration" => $this->expiry]);
+        echo json_encode(["token" => $token, "name" => $this->clientName, "resto" => $this->restoName, "role" => $this->role, "expiration" => $this->expiry]);
     }
 }

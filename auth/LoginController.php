@@ -26,7 +26,10 @@ class LoginController{
         }
 
         $info = $this->query->getUserInfo($this->model->getUsername());
-        $jwt = new JWTMaker($info[0]["account_id"], $info[0]["first_name"] . " " . $info[0]["last_name"] , $info[0]["name"], (60 * 60) * 5);
+        $expiry = ($info[0]["role"] === "kiosk") ? (60 * 60) * 24 : (60 * 60) * 2;
+        error_log($info[0]["role"]);
+        error_log($expiry);
+        $jwt = new JWTMaker($info[0]["account_id"], $info[0]["first_name"] . " " . $info[0]["last_name"] , $info[0]["name"], $info[0]["role"], $expiry);
         $jwt->createToken();
         return;
     }
