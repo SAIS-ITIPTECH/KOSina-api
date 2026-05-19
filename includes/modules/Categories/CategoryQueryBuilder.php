@@ -25,6 +25,7 @@ class CategoryQueryBuilder{
     }
 
     public function update($id){
+        echo $this->pdo;
         $query = "UPDATE menu_categories SET category_id = :setCategoryId, name = :setName, display_index = :setDisplayIndex WHERE category_id = :setid";
         if(!$this->model->validateId($id)){return;}
         $stmt = $this->pdo->prepare($query);
