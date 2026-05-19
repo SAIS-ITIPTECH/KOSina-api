@@ -19,6 +19,7 @@ class ProductModel {
     }
 
     public function validateFields(){
+        error_log(json_encode($this->userInput()));
         $name = $this->nameValidator();
         if (!$name) { return false; }
         $price = $this->priceValidator();
