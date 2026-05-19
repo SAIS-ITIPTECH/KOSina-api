@@ -21,7 +21,7 @@ class LoginQuery{
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setusername", $username, PDO::PARAM_STR);
         $this->execution->execute($stmt);
-        error_log(json_encode());
+        error_log(json_encode($this->execution->getResults()));
         return $this->execution->getResults();
     }
 }
