@@ -117,16 +117,6 @@ class Main{
 
         // CONNECT DATABASE
         $dbCredentials = $this->getDbCrendentials();
-        error_log("role: {$dbCredentials['role']}"); 
-        error_log("address: {$_SERVER['HTTP_ORIGIN']}");
-        // if (
-        //     ($dbCredentials['role'] !== "kiosk" && $_SERVER['HTTP_REFERER'] === "https://sais-itiptech.github.io/") ||
-        //     ($dbCredentials['role'] === "kiosk" && $_SERVER['HTTP_REFERER'] !== "https://sais-itiptech.github.io/")
-        // ) {
-        //     http_response_code(404);
-        //     echo json_encode(["status" => "error", "message" => strtoupper("$this->table IS NOT A VALID HEADER")]);
-        //     return null;
-        // }
         $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
         $pdo = $database->connectDatabase();
         $execution = new Execution();
