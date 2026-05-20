@@ -8,7 +8,14 @@ class CategoryQueryBuilder{
     public function __construct(private $model, private $pdo, private $execution){}
 
     public function get(){
-        $query = "SELECT menu_categories.category_id, menu_categories.name, menu_categories.display_index FROM menu_categories WHERE deleted = false ORDER BY display_index ASC";
+        $query = "
+            SELECT menu_categories.*, count(product_list.category_id) as 'total_products'
+            FROM `menu_categories`
+            left join product_list on product_list.category_id = menu_categories.category_id 
+            WHERE menu_categories.deleted = 0
+            GROUP BY menu_categories.category_id
+            ORDER BY display_index ASC
+        ";
         $stmt = $this->pdo->prepare($query);
         $this->execution->execute($stmt);
         $result = $this->execution->getResults();
