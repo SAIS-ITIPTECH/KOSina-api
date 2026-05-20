@@ -1,25 +1,25 @@
 <?php
 
 // HEADERS
-$allowedDomains = [
-    "https://sais-itiptech.github.io/KOSina-Dashboard/",
-    "null", // local HTML files (file://)
-    "http://localhost",
-    "http://localhost:3000", // add whatever port you use
-    "http://127.0.0.1",
-];
+// $allowedDomains = [
+//     "https://sais-itiptech.github.io/KOSina-Dashboard/",
+//     "null", // local HTML files (file://)
+//     "http://localhost",
+//     "http://localhost:3000", // add whatever port you use
+//     "http://127.0.0.1",
+// ];
 
-$origin = $_SERVER["HTTP_ORIGIN"] ?? "";
+// $origin = $_SERVER["HTTP_ORIGIN"] ?? "";
 
-header("Content-Type: application/json; charset=utf-8");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+// header("Content-Type: application/json; charset=utf-8");
+// header("Access-Control-Allow-Origin: *");
+// header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS");
+// header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-    http_response_code(200);
-    exit;
-}
+// if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
+//     http_response_code(200);
+//     exit;
+// }
 
 // MODULES
 require_once __DIR__ . "/includes/modules/Categories/Categories.php";
