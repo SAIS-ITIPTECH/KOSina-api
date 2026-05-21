@@ -38,11 +38,9 @@ class CategoryModel
 
     public function validateId(string $dirtyId): bool
     {
-        if (empty($dirtyId) || preg_match('/[^a-zA-Z0-9]/', $dirtyId)) {
-            http_response_code(422);
-            echo json_encode(["status" => "error", "message" => "THE CATEGORY ID IS INVALID."]);
-            return false;
-        }
+        if ($this->validator->checkEmpty("TARGET ID", $dirtyId ?? null) === null) {return false;}
+        if ($this->validator->checkSpecial("TARGET ID", $dirtyId ?? null, '/[^a-zA-Z0-9 _\-.]/') === null) {return false;}
+        
         $this->id = $dirtyId;
         return true;
     }

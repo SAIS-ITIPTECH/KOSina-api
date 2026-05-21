@@ -44,11 +44,9 @@ class ProductModel
 
     public function validateId(string $dirtyId): bool
     {
-        if (empty($dirtyId) || !filter_var($dirtyId, FILTER_VALIDATE_INT)) {
-            http_response_code(422);
-            echo json_encode(["status" => "error", "message" => "THE PRODUCT ID IS INVALID."]);
-            return false;
-        }
+        if ($this->validator->checkEmpty("TARGET ID", $dirtyId ?? null) === null) {return false;}
+        if ($this->validator->checkSpecial("TARGET ID", $dirtyId ?? null, '/[^a-zA-Z0-9 _\-.]/') === null) {return false;}
+
         $this->id = (int) $dirtyId;
         return true;
     }
