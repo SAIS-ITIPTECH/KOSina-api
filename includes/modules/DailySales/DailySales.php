@@ -9,7 +9,8 @@ class DailySales implements Controller{
         private $pdo,
         private $execution,
         private $id,
-        private $role
+        private $role,
+        private $datePage
     ){}
 
     public function buildModel(){
@@ -19,7 +20,7 @@ class DailySales implements Controller{
     public function query(){
         switch($_SERVER["REQUEST_METHOD"]){
             case "GET":
-                $this->queryBuilder->get();
+                $this->queryBuilder->get($this->datePage);
                 break;
 
             case "DELETE":

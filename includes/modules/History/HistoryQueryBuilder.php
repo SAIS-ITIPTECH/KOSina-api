@@ -8,41 +8,24 @@ class HistoryQueryBuilder{
     public function __construct(private $model, private $pdo, private $execution){}
 
     public function get($datePage, $page){
-        if ($datePage === null && $page === null ) {
-            $query = "
-                SELECT order_history.*, daily_sales.daily_sale_id
-                FROM order_history
-                LEFT JOIN daily_sales
-                ON order_history.daily_sale_id = daily_sales.daily_sale_id
-                ORDER BY order_id DESC
-            ";
-
-            $stmt = $this->pdo->prepare($query);
-            $this->execution->execute($stmt);
-            $result = $this->execution->getResults();
-            http_response_code(200);
-            echo json_encode($result);
-
-        } else {
-            if(!$this->model->datePageValidator($datePage)){return;}
-            if(!$this->model->pageValidator($page)){return;}
-            $query =  "
-                SELECT order_history.*, daily_sales.daily_sale_id
-                FROM order_history
-                LEFT JOIN daily_sales
-                ON order_history.daily_sale_id = daily_sales.daily_sale_id
-                WHERE DATE(order_date) = DATE(:setDateLimit)
-                ORDER BY order_id DESC
-                LIMIT 50 offset :setLimit;
-            " ;
-            $stmt = $this->pdo->prepare($query);
-            $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
-            $stmt->bindValue(":setLimit", $page, PDO::PARAM_INT);
-            $this->execution->execute($stmt);
-            $result = $this->execution->getResults();
-            http_response_code(200);
-            echo json_encode($result);
-        }
+        if(!$this->model->datePageValidator($datePage)){return;}
+        if(!$this->model->pageValidator($page)){return;}
+        $query =  "
+            SELECT order_history.*, daily_sales.daily_sale_id
+            FROM order_history
+            LEFT JOIN daily_sales
+            ON order_history.daily_sale_id = daily_sales.daily_sale_id
+            WHERE DATE(order_date) = DATE(:setDateLimit)
+            ORDER BY order_id DESC
+            LIMIT 50 offset :setLimit;
+        " ;
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
+        $stmt->bindValue(":setLimit", $page, PDO::PARAM_INT);
+        $this->execution->execute($stmt);
+        $result = $this->execution->getResults();
+        http_response_code(200);
+        echo json_encode($result);
     }
 
     public function update($id){
