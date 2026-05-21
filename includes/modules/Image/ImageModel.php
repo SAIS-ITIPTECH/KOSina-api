@@ -24,9 +24,9 @@ class ImageModel{
 
     public function validateAll(){
         $img = $this->imgValidator();
-        if (!$img) { return false; }
+        if ($img === null) { return false; }
         $productId = $this->productIdValidator();
-        if (!$productId) { return false; }
+        if ($productId === null) { return false; }
  
         $this->img =  $img;
         $this->productId =  $productId;
@@ -43,7 +43,7 @@ class ImageModel{
 
     public function productIdValidator(){
         $value = $this->validator->checkEmpty("PRODUCT ID", $this->userInput["productId"] ?? null);
-        if(isset($value)) { $value = $this->validator->checkNumber("PRICE", $value); }
+        if(isset($value)) { $value = $this->validator->checkSpecial("productId", $value, '[^a-zA-Z0-9\-]'); }
         return $value;
     }
 
@@ -70,6 +70,15 @@ class ImageModel{
         }
         
         $value = $this->userInput["image"];
+        if (!preg_match('/[\/;:]/', $value)) {
+            http_response_code(415);
+            echo json_encode([
+                "status" => "error",
+                "message" => strtoupper("INVALID FILE VALUE!")
+            ]);
+            return null;
+        }
+
         $type = explode("/", explode(";", explode(":", $value)[1])[0])[1];
         $allowed = ["jpg", "jpeg", "png", "bmp", "gif", "tiff", "webp"];
         if (!in_array($type, $allowed)) {
@@ -114,7 +123,14 @@ class ImageModel{
     }
 
     private function validateTarget($value){
-        $value = $this->validator->checkEmpty("TARGET", $this->userInput["productId"] ?? null);
+        $allowed = ["admin", "products"];
+        if(!in_array($value, $allowed)){
+            http_response_code(409);
+            echo json_encode(["status" => "error", "message" => strtoupper("THIS TARGET IS INVALID")]);
+            return null;
+        }
+        
+        $value = $this->validator->checkEmpty("TARGET", $value ?? null);
         if(isset($value)) { $value = $this->validator->checkSpecial("TARGET", $value, '[^a-zA-Z0-9\-]'); }
         return $value;
     }

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../../Database/Execution.php";
-require_once __DIR__ . "/../../Database/Database.php";
+require_once __DIR__ . "/../../Database/CredentialsGrabber.php";
+require_once __DIR__ . "/../../../auth/TokenChecker.php";
 
 class ImageQueryBuilder{
     private $msg;
@@ -20,22 +21,32 @@ class ImageQueryBuilder{
         echo json_encode($result);
     }
 
-    public function post($id){
-        $this->model->processId($id);
+    public function post(){
         if (!$this->model->validateAll()){return;}
         if(!$this->model->checkDuplicate($this->model->getProductId())) { return null; }
-        $query = "INSERT INTO product_images (product_id, image_id, display_url)
-                VALUES (:setProductId, :setImageId, :setDisplayUrl)";
-
+        $query = "
+            INSERT INTO product_images (product_id, image_id, display_url)
+            VALUES (:setProductId, :setImageId, :setDisplayUrl)
+        ";
         $stmt = $this->pdo->prepare($query);
         $this->superBind("IMAGE HAS BEEN ADDED", $stmt);
     }
 
     public function update($id){
-        $this->model->processId($id);
+        if (!$this->model->processId($id)){return;}
+
+        if ($this->model->getTarget() === "admin") {
+           $this->adminUpdate();
+           return;
+        }
+
         if (!$this->model->validateAll()){return;}
 
-        $query = "UPDATE product_images SET product_id = :setProductId, image_id = :setImageId , display_url = :setDisplayUrl  WHERE product_id = :setid";
+        $query = "
+            UPDATE product_images
+            SET product_id = :setProductId, image_id = :setImageId , display_url = :setDisplayUrl  
+            WHERE product_id = :setid
+        ";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":setid", $this->model->getProductId(), PDO::PARAM_STR);
@@ -66,5 +77,24 @@ class ImageQueryBuilder{
 
         http_response_code(200);
         echo json_encode(["status" => "success", "message" => strtoupper($this->msg)]);
+    }
+
+    private function adminUpdate(){
+        $tokenChecker = new TokenChecker();
+        $accountId    = $tokenChecker->decodeToken();
+        $pdo = (new Database(getenv("DATABASE_HOSTNAME"), getenv("DATABASE_NAME"), getenv("DATABASE_USERNAME"), getenv("DATABASE_PASSWORD")))->connectDatabase();
+        $stmt = $pdo->prepare("
+            UPDATE clients
+            LEFT JOIN accounts ON clients.client_id = accounts.client_id
+            SET clients.logo_url = :seturl
+            WHERE accounts.account_id = :setid;
+        ");
+
+        if (!$this->model->validateAll()){return;}
+        $this->model->uploadImage();
+        $stmt->bindValue(":seturl", $this->model->getDisplayUrl(), PDO::PARAM_STR);
+        $stmt->bindValue(":setid", $accountId, PDO::PARAM_INT);
+        $this->execution->execute($stmt);
+        echo json_encode(($this->execution->getResults()));
     }
 }
