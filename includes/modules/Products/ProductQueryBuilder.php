@@ -50,7 +50,7 @@ class ProductQueryBuilder
                   SET name = :setName, product_id = :setProductId, price = :setPrice, category_id = :setCategoryId, available = :setAvailable
                   WHERE product_id = :setId";
         $stmt  = $this->pdo->prepare($query);
-        $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_STR);
         $this->bindAndExecute($stmt, "HAS BEEN UPDATED");
     }
 
@@ -60,7 +60,7 @@ class ProductQueryBuilder
             return;
         }
         $stmt = $this->pdo->prepare("UPDATE product_list SET deleted = true WHERE product_id = :setId");
-        $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_STR);
         $this->execution->execute($stmt);
         http_response_code(200);
         echo json_encode(["status" => "success", "message" => "DELETED SUCCESSFULLY"]);
