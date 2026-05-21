@@ -5,6 +5,7 @@ require_once __DIR__ . "/../../Validation/Validation.php";
 class ProductModel
 {
     private string|null $name       = null;
+    private string|null $productId  = null;
     private float|null  $price      = null;
     private string|null $categoryId = null;
     private bool|null   $available  = null;
@@ -24,6 +25,7 @@ class ProductModel
     public function validateFields(): bool
     {
         $name       = $this->validateName();
+        $productId  = $this->validateProductId();
         $price      = $this->validatePrice();
         $categoryId = $this->validateCategoryId();
         $available  = $this->validateAvailable();
@@ -33,6 +35,7 @@ class ProductModel
         }
 
         $this->name       = $name;
+        $this->productId  = $productId;
         $this->price      = (float) $price;
         $this->categoryId = $categoryId;
         $this->available  = ($available === "true");
@@ -55,6 +58,15 @@ class ProductModel
         $value = $this->validator->checkEmpty("NAME", $this->userInput["name"] ?? null);
         if (isset($value)) {
             $value = $this->validator->checkSpecial("NAME", $value, '/[^a-zA-Z0-9 _\-.]/');
+        }
+        return $value;
+    }
+
+    private function validateProductId(): mixed
+    {
+        $value = $this->validator->checkEmpty("PRODUCT ID", $this->userInput["productId"] ?? null);
+        if (isset($value)) {
+            $value = $this->validator->checkSpecial("PRODUCT ID", $value, '/[^a-zA-Z0-9 _\-.]/');
         }
         return $value;
     }
@@ -82,10 +94,11 @@ class ProductModel
         return $this->validator->checkEmpty("AVAILABLE", $this->userInput["available"] ?? null);
     }
 
-    public function getName(): string|null    { return $this->name; }
-    public function getPrice(): float|null    { return $this->price; }
-    public function getCategoryId(): string|null { return $this->categoryId; }
-    public function getAvailable(): bool|null { return $this->available; }
-    public function getId(): int|null         { return $this->id; }
-    public function getUserInput(): array     { return $this->userInput; }
+    public function getName(): string|null          { return $this->name; }
+    public function getProductId(): string|null     { return $this->productId; }
+    public function getPrice(): float|null          { return $this->price; }
+    public function getCategoryId(): string|null    { return $this->categoryId; }
+    public function getAvailable(): bool|null       { return $this->available; }
+    public function getId(): int|null               { return $this->id; }
+    public function getUserInput(): array           { return $this->userInput; }
 }

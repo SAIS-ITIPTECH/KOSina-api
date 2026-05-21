@@ -5,19 +5,32 @@ class ErrorHandler
     public static function handleException(Throwable $exception): void
     {
         http_response_code(500);
+        $message = $exception->getMessage();
+
+        if (str_contains($exception->getMessage(), "1062")) {
+            $message = self::duplicate($exception);
+        }
 
         if (getenv("APP_ENV") === "development") {
             echo json_encode([
                 "status"  => "error",
-                "message" => $exception->getMessage(),
+                "message" => $message,
                 "line"    => $exception->getLine(),
                 "file"    => $exception->getFile(),
             ]);
         } else {
             echo json_encode([
                 "status"  => "error",
-                "message" => "SOMETHING WENT WRONG",
+                "message" => $message,
             ]);
         }
+    }
+
+    private static function duplicate($exception) {
+        $slicedMessage = explode('\'', $exception->getMessage());
+        $duplicate = $slicedMessage[1] ?? "unknown";
+        $keyName = $slicedMessage[3] ?? "PRIMARY";
+        $column = ($keyName === "PRIMARY") ? "ID" : strtoupper(str_replace('_', " ", $keyName));
+        return "THE $column '$duplicate' ALREADY EXISTS";
     }
 }

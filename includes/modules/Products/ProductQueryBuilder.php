@@ -35,8 +35,8 @@ class ProductQueryBuilder
 
     public function post(): void
     {
-        $query = "INSERT INTO product_list (name, price, category_id, available)
-                  VALUES (:setName, :setPrice, :setCategoryId, :setAvailable)";
+        $query = "INSERT INTO product_list (name, product_id, price, category_id, available)
+                  VALUES (:setName, :setProductId, :setPrice, :setCategoryId, :setAvailable)";
         $stmt  = $this->pdo->prepare($query);
         $this->bindAndExecute($stmt, "HAS BEEN ADDED");
     }
@@ -47,7 +47,7 @@ class ProductQueryBuilder
             return;
         }
         $query = "UPDATE product_list
-                  SET name = :setName, price = :setPrice, category_id = :setCategoryId, available = :setAvailable
+                  SET name = :setName, product_id = :setproductId, price = :setPrice, category_id = :setCategoryId, available = :setAvailable
                   WHERE product_id = :setId";
         $stmt  = $this->pdo->prepare($query);
         $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_INT);
@@ -72,6 +72,7 @@ class ProductQueryBuilder
             return;
         }
         $stmt->bindValue(":setName",       $this->model->getName(),       PDO::PARAM_STR);
+        $stmt->bindValue(":setProductId",       $this->model->getProductId(),       PDO::PARAM_STR);
         $stmt->bindValue(":setPrice",      $this->model->getPrice());
         $stmt->bindValue(":setCategoryId", $this->model->getCategoryId(), PDO::PARAM_STR);
         $stmt->bindValue(":setAvailable",  $this->model->getAvailable(),  PDO::PARAM_BOOL);
