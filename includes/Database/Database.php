@@ -11,7 +11,7 @@ class Database
 
     public function connectDatabase(): PDO
     {
-        $port = getenv("PORT") ?: "3306";
+        $port = getenv("DATABASE_PORT") ?: "3306";
         $dsn  = "mysql:host={$this->host};port={$port};dbname={$this->name};charset=utf8";
         return new PDO($dsn, $this->user, $this->password, [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
