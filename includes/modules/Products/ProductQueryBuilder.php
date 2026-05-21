@@ -71,6 +71,8 @@ class ProductQueryBuilder
         if (!$this->model->validateFields()) {
             return;
         }
+
+        error_log(json_encode([$this->model->getName(), $this->model->getProductId(), $this->model->getPrice(), $this->model->getCategoryId(), $this->model->getAvailable()]));
         $stmt->bindValue(":setName",       $this->model->getName(),       PDO::PARAM_STR);
         $stmt->bindValue(":setProductId",       $this->model->getProductId(),       PDO::PARAM_STR);
         $stmt->bindValue(":setPrice",      $this->model->getPrice());
