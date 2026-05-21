@@ -15,10 +15,12 @@ class CategoryQueryBuilder
         $query = "
             SELECT menu_categories.*, COUNT(product_list.category_id) AS total_products
             FROM menu_categories
-            LEFT JOIN product_list ON product_list.category_id = menu_categories.category_id
-            WHERE menu_categories.deleted = 0 AND product_list.deleted = 0
+            LEFT JOIN product_list 
+            ON product_list.category_id = menu_categories.category_id 
+            AND product_list.deleted = 0
+            WHERE menu_categories.deleted = 0
             GROUP BY menu_categories.category_id
-            ORDER BY display_index ASC
+            ORDER BY display_index ASC;
         ";
         $stmt = $this->pdo->prepare($query);
         $this->execution->execute($stmt);
