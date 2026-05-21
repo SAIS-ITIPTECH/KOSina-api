@@ -30,7 +30,7 @@ class ErrorHandler
         $slicedMessage = explode('\'', $exception->getMessage());
         $duplicate = $slicedMessage[1] ?? "unknown";
         $keyName = $slicedMessage[3] ?? "PRIMARY";
-        $column = ($keyName === "PRIMARY") ? "ID" : strtoupper(str_replace('_', " ", $keyName));
+        $column = ($keyName === "PRIMARY") ? "ID" : strtoupper(explode('.', str_replace('_', " ", $keyName))[1]);
         return "THE $column '$duplicate' ALREADY EXISTS";
     }
 }
