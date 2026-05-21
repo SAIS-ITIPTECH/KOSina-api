@@ -47,7 +47,7 @@ class ProductQueryBuilder
             return;
         }
         $query = "UPDATE product_list
-                  SET name = :setName, product_id = :setproductId, price = :setPrice, category_id = :setCategoryId, available = :setAvailable
+                  SET name = :setName, product_id = :setProductId, price = :setPrice, category_id = :setCategoryId, available = :setAvailable
                   WHERE product_id = :setId";
         $stmt  = $this->pdo->prepare($query);
         $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_INT);
@@ -72,7 +72,6 @@ class ProductQueryBuilder
             return;
         }
 
-        error_log(json_encode([$this->model->getName(), $this->model->getProductId(), $this->model->getPrice(), $this->model->getCategoryId(), $this->model->getAvailable()]));
         $stmt->bindValue(":setName",       $this->model->getName(),       PDO::PARAM_STR);
         $stmt->bindValue(":setProductId",       $this->model->getProductId(),       PDO::PARAM_STR);
         $stmt->bindValue(":setPrice",      $this->model->getPrice());
