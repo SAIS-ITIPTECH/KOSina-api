@@ -39,6 +39,7 @@ class LoginController
             $info[0]["first_name"] . " " . $info[0]["last_name"],
             $info[0]["name"],
             $info[0]["role"],
+            $info[0]["logo_url"],
             $expiry
         );
         $jwt->createToken();

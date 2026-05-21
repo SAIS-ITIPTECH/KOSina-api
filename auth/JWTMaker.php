@@ -11,6 +11,7 @@ class JWTMaker
         private string $clientName,
         private string $restaurantName,
         private string $role,
+        private string $logoUrl,
         private int    $expiry
     ) {}
 
@@ -32,6 +33,7 @@ class JWTMaker
             "name"       => $this->clientName,
             "resto"      => $this->restaurantName,
             "role"       => $this->role,
+            "logo"       => $this->logoUrl,
             "expiration" => $this->expiry,
         ]);
     }

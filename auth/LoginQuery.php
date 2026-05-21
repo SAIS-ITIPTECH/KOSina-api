@@ -22,7 +22,7 @@ class LoginQuery
     public function getUserInfo(string $username): array|false
     {
         $query = "
-            SELECT accounts.*, accounts.role, clients.name, clients.client_id
+            SELECT accounts.*, accounts.role, clients.name, clients.client_id, clients.logo_url
             FROM accounts
             JOIN clients ON accounts.client_id = clients.client_id
             WHERE accounts.username = :setUsername
