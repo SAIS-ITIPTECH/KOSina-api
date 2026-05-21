@@ -68,7 +68,7 @@ class ImageQueryBuilder{
     private function superBind($secondMessage, $stmt){
         
         $this->model->uploadImage();
-        $stmt->bindValue(":setProductId", $this->model->getProductId(), PDO::PARAM_INT);
+        $stmt->bindValue(":setProductId", $this->model->getProductId(), PDO::PARAM_STR);
         $stmt->bindValue(":setImageId", $this->model->getImageId(), PDO::PARAM_STR);
         $stmt->bindValue(":setDisplayUrl", $this->model->getDisplayUrl(), PDO::PARAM_STR);
 
