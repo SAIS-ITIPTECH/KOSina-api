@@ -1,52 +1,45 @@
 <?php
+
 require_once __DIR__ . "/../../Controller/Controller.php";
 require_once __DIR__ . "/ProductModel.php";
 require_once __DIR__ . "/ProductQueryBuilder.php";
 
-class Products implements Controller {
-    private $queryBuilder;
+class Products implements Controller
+{
+    private ProductQueryBuilder $queryBuilder;
 
     public function __construct(
-        private $pdo,
-        private $execution,
-        private $id,
-        private $role
-    ){}
+        private PDO       $pdo,
+        private Execution $execution,
+        private ?string   $id,
+        private string    $role
+    ) {}
 
-    public function buildModel(){
-        $model = new ProductModel();
+    public function buildModel(): void
+    {
+        $model              = new ProductModel();
         $this->queryBuilder = new ProductQueryBuilder($model, $this->pdo, $this->execution);
     }
 
-    public function query(){
-        error_log($this->role);
-        switch($_SERVER["REQUEST_METHOD"]){
+    public function query(): void
+    {
+        switch ($_SERVER["REQUEST_METHOD"]) {
             case "GET":
-                error_log("get");
-                
                 $this->queryBuilder->get($this->id);
                 break;
 
             case "POST":
-                error_log("post");
-
                 if (!$this->checkRole()) return;
                 $this->queryBuilder->post();
                 break;
 
             case "PATCH":
-                
-error_log("update1");
                 if (!$this->checkRole()) return;
-                error_log("update2");
                 if (!$this->checkId()) return;
-                error_log("update3");
                 $this->queryBuilder->update($this->id);
                 break;
 
             case "DELETE":
-                error_log("delete");
-
                 if (!$this->checkRole()) return;
                 if (!$this->checkId()) return;
                 $this->queryBuilder->delete($this->id);
@@ -54,24 +47,25 @@ error_log("update1");
 
             default:
                 http_response_code(405);
-                echo json_encode(["status" => "error", "message" => "Method not allowed."]);
-                return;
+                echo json_encode(["status" => "error", "message" => "METHOD NOT ALLOWED"]);
         }
     }
 
-    private function checkRole(){
-        if($this->role != "admin") {
+    private function checkRole(): bool
+    {
+        if ($this->role !== "admin") {
             http_response_code(403);
-            echo json_encode(["status" => "error", "message" => strtoupper("ONLY ADMIN CAN MODIFY KIOSK DATA!")]);
+            echo json_encode(["status" => "error", "message" => "ONLY ADMIN CAN MODIFY KIOSK DATA!"]);
             return false;
         }
         return true;
     }
 
-    private function checkId(){
-        if(!$this->id){
-            http_response_code(403);
-            echo json_encode(["status" => "error", "message" => strtoupper("THIS METHOD NEEDS AN ID!")]);
+    private function checkId(): bool
+    {
+        if (!$this->id) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "THIS METHOD NEEDS AN ID!"]);
             return false;
         }
         return true;

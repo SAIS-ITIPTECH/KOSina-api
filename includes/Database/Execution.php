@@ -1,17 +1,22 @@
 <?php
-    class Execution{
-        private $results;
 
-        public function execute($stmt){
-            $stmt->execute();
-            $this->results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
+class Execution
+{
+    private array $results = [];
 
-        public function getResults(){
-            return $this->results;
-        }
-
-        public function sendMessage($message){
-            echo json_encode($message);
-        }
+    public function execute(PDOStatement $stmt): void
+    {
+        $stmt->execute();
+        $this->results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getResults(): array
+    {
+        return $this->results;
+    }
+
+    public function sendMessage(mixed $message): void
+    {
+        echo json_encode($message);
+    }
+}

@@ -1,49 +1,62 @@
 <?php
 
-require_once __DIR__ . "/../../Database/CredentialsGraber.php";
+require_once __DIR__ . "/../../Database/CredentialsGrabber.php";
 require_once __DIR__ . "/../../Database/Database.php";
 
-class ConfirmPayment{
-    private $pdo;
-    private $id;
+class ConfirmPayment
+{
+    private PDO    $pdo;
+    private string $orderId;
 
-    public function checkCashless(){
-        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-        if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
-            $result = json_decode(file_get_contents("php://input"), true) ?? [];
-        }
+    public function checkCashless(): void
+    {
+        $payload = json_decode(file_get_contents("php://input"), true) ?? [];
 
-        $getDb = new CredentialsGraber($result['data']['attributes']['data']['attributes']['line_items'][0]['name']);
-        $getDb->connectCredentialsName();
-        
-        $database = new Database(getenv("DATABASE_HOSTNAME"), $getDb->getDbName(), $getDb->getDbUsername(), $getDb->getDbPassword());
+        $restaurantName = $payload["data"]["attributes"]["data"]["attributes"]["line_items"][0]["name"];
+        $grabber        = new CredentialsGrabber($restaurantName);
+        $grabber->connectByName();
+
+        $database  = new Database(
+            getenv("DATABASE_HOSTNAME"),
+            $grabber->getDbName(),
+            $grabber->getDbUsername(),
+            $grabber->getDbPassword()
+        );
         $this->pdo = $database->connectDatabase();
-    
-        $paymentStatus = $result['data']['attributes']['data']['attributes']['payments'][0]['attributes']['status'];
 
-        if ($paymentStatus === "paid"){
-            $this->id = $result['data']['attributes']['data']['attributes']['line_items'][0]['description'];
-            $this->confirm();
+        $paymentStatus = $payload["data"]["attributes"]["data"]["attributes"]["payments"][0]["attributes"]["status"];
+
+        if ($paymentStatus === "paid") {
+            $this->orderId = $payload["data"]["attributes"]["data"]["attributes"]["line_items"][0]["description"];
+            $this->confirmPayment();
         }
     }
 
-    public function checkCash($dbCredentials, $id){
-        $this->id = $id;
-        $database = new Database(getenv("DATABASE_HOSTNAME"), $dbCredentials["dbName"], $dbCredentials["dbUsername"], $dbCredentials["dbPassword"]);
+    public function checkCash(array $dbCredentials, string $orderId): void
+    {
+        $this->orderId = $orderId;
+        $database      = new Database(
+            getenv("DATABASE_HOSTNAME"),
+            $dbCredentials["dbName"],
+            $dbCredentials["dbUsername"],
+            $dbCredentials["dbPassword"]
+        );
         $this->pdo = $database->connectDatabase();
-        $this->confirm();
+        $this->confirmPayment();
     }
 
-    private function confirm(){
-        $stmt = $this->pdo->prepare('UPDATE order_history SET paid = true WHERE order_id= :setid');
-        $stmt->bindValue(":setid", $this->id);
+    private function confirmPayment(): void
+    {
+        $stmt = $this->pdo->prepare("UPDATE order_history SET paid = true WHERE order_id = :setId");
+        $stmt->bindValue(":setId", $this->orderId);
         $stmt->execute();
         $this->updateDailySales();
     }
 
-    private function updateDailySales(){
-        $stmt = $this->pdo->prepare('SELECT daily_sale_id FROM order_history WHERE order_id = :setid');
-        $stmt->bindValue(":setid", $this->id);
+    private function updateDailySales(): void
+    {
+        $stmt = $this->pdo->prepare("SELECT daily_sale_id FROM order_history WHERE order_id = :setId");
+        $stmt->bindValue(":setId", $this->orderId);
         $stmt->execute();
         $dailySaleId = $stmt->fetchColumn();
 
@@ -53,23 +66,21 @@ class ConfirmPayment{
                 total_income = COALESCE((
                     SELECT SUM(total_price)
                     FROM order_history
-                    WHERE daily_sale_id = :setid1 AND paid = 1
+                    WHERE daily_sale_id = :setId1 AND paid = 1
                 ), 0),
-
                 total_sales = (
                     SELECT COUNT(*)
                     FROM order_history
-                    WHERE daily_sale_id = :setid2 AND paid = 1
+                    WHERE daily_sale_id = :setId2 AND paid = 1
                 )
-
-            WHERE daily_sale_id = :setid3;
+            WHERE daily_sale_id = :setId3
         ");
-        $stmt->bindValue(":setid1", $dailySaleId);
-        $stmt->bindValue(":setid2", $dailySaleId);
-        $stmt->bindValue(":setid3", $dailySaleId);
+        $stmt->bindValue(":setId1", $dailySaleId);
+        $stmt->bindValue(":setId2", $dailySaleId);
+        $stmt->bindValue(":setId3", $dailySaleId);
         $stmt->execute();
 
         http_response_code(200);
-        echo json_encode(["status" => "success", "message" => strtoupper("ORDER HAS BEEN PAID")]);
+        echo json_encode(["status" => "success", "message" => "ORDER HAS BEEN PAID"]);
     }
 }

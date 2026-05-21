@@ -1,25 +1,29 @@
 <?php
+
 require_once __DIR__ . "/../../Controller/Controller.php";
 require_once __DIR__ . "/CategoryModel.php";
 require_once __DIR__ . "/CategoryQueryBuilder.php";
 
-class Categories implements Controller{
-    private $queryBuilder;
+class Categories implements Controller
+{
+    private CategoryQueryBuilder $queryBuilder;
 
     public function __construct(
-        private $pdo,
-        private $execution,
-        private $id,
-        private $role
-    ){}
+        private PDO       $pdo,
+        private Execution $execution,
+        private ?string   $id,
+        private string    $role
+    ) {}
 
-    public function buildModel(){
-        $model = new CategoryModel();
+    public function buildModel(): void
+    {
+        $model              = new CategoryModel();
         $this->queryBuilder = new CategoryQueryBuilder($model, $this->pdo, $this->execution);
     }
 
-    public function query(){
-        switch($_SERVER["REQUEST_METHOD"]){
+    public function query(): void
+    {
+        switch ($_SERVER["REQUEST_METHOD"]) {
             case "GET":
                 $this->queryBuilder->get();
                 break;
@@ -42,27 +46,26 @@ class Categories implements Controller{
                 break;
 
             default:
-                http_response_code(404);
-                echo json_encode(["status" => "error", "message" => strtoupper("Method Not Allowed!!!")]);
-                return null;
+                http_response_code(405);
+                echo json_encode(["status" => "error", "message" => "METHOD NOT ALLOWED"]);
         }
     }
-    
-    private function checkRole(){
-        error_log($this->role);
-        error_log(gettype($this->role));
-        if($this->role != "admin") {
+
+    private function checkRole(): bool
+    {
+        if ($this->role !== "admin") {
             http_response_code(403);
-            echo json_encode(["status" => "error", "message" => strtoupper("ONLY ADMIN CAN MODIFY KIOSK DATA!")]);
+            echo json_encode(["status" => "error", "message" => "ONLY ADMIN CAN MODIFY KIOSK DATA!"]);
             return false;
         }
         return true;
     }
 
-    private function checkId(){
-        if(!$this->id){
-            http_response_code(403);
-            echo json_encode(["status" => "error", "message" => strtoupper("THIS METHOD NEEDS AN ID!")]);
+    private function checkId(): bool
+    {
+        if (!$this->id) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "THIS METHOD NEEDS AN ID!"]);
             return false;
         }
         return true;

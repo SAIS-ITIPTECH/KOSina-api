@@ -3,147 +3,152 @@
 require_once __DIR__ . "/../../Validation/Validation.php";
 require_once __DIR__ . "/../../Database/Database.php";
 
-class NewOrderModel {
-    private $dailySalesId;
-    private $orderId;
-    private $restoName;
-    private $paymentMethod;
-    private $orders;
-    private $totalPrice;
-    private $userInput;
-    private $validator;
-    private $id;
+class NewOrderModel
+{
+    private string|null $dailySalesId  = null;
+    private string|null $orderId       = null;
+    private string|null $restaurantName = null;
+    private string|null $paymentMethod = null;
+    private array|null  $orders        = null;
+    private float|null  $totalPrice    = null;
+    private array       $userInput     = [];
+    private Validation  $validator;
 
-    public function __construct(private $pdo, private $dailySalesQueryBuilder){
+    public function __construct(private PDO $pdo, private DailySalesQueryBuilder $dailySalesQueryBuilder)
+    {
         $this->validator = new Validation();
-        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-        if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
+        $method          = $_SERVER["REQUEST_METHOD"] ?? "GET";
+        if (in_array($method, ["POST", "PUT", "PATCH", "DELETE"])) {
             $this->userInput = json_decode(file_get_contents("php://input"), true) ?? [];
         }
     }
 
-    public function checkDailySales(){
-        $id = $this->dailySalesQueryBuilder->getLatest();
-        if ($id != date("Ymd")) {
-            $this->dailySalesId = date("Ymd");
+    public function checkDailySales(): void
+    {
+        $latestId = $this->dailySalesQueryBuilder->getLatest();
+        $today    = date("Ymd");
+
+        if ($latestId !== $today) {
+            $this->dailySalesId = $today;
             $this->dailySalesQueryBuilder->post($this->dailySalesId);
-            return;
+        } else {
+            $this->dailySalesId = $latestId;
         }
-        $this->dailySalesId = $id;
     }
 
-    public function validateFields(){
-        $restoName  = $this->restoNameValidator();
-        if( !$restoName ) { return false; }
-        $paymentMethod  = $this->paymentMethodValidator();
-        if( !$paymentMethod ) { return false; }
+    public function validateFields(): bool
+    {
+        $restaurantName = $this->validateRestaurantName();
+        $paymentMethod  = $this->validatePaymentMethod();
 
-        $this->restoName  = $restoName;
+        if (!$restaurantName || !$paymentMethod) {
+            return false;
+        }
+
+        $this->restaurantName = $restaurantName;
         $this->paymentMethod  = $paymentMethod;
-        $this->OrderIdGenerator();
-
+        $this->generateOrderId();
         return true;
     }
 
-    public function OrderIdGenerator(){
+    public function generateOrderId(): void
+    {
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM order_history WHERE daily_sale_id = :setDailySalesId");
-        $stmt->bindValue("setDailySalesId", $this->dailySalesId);
+        $stmt->bindValue(":setDailySalesId", $this->dailySalesId);
         $stmt->execute();
         $lastIndex = $stmt->fetchColumn();
-        
-        $date = date('Ymd');
-        $autoIndex = str_pad($lastIndex + 1, 4 ,"0", STR_PAD_LEFT);
-        $this->orderId = "$date-$autoIndex";
+
+        $date      = date("Ymd");
+        $autoIndex = str_pad($lastIndex + 1, 4, "0", STR_PAD_LEFT);
+        $this->orderId = "{$date}-{$autoIndex}";
     }
 
-    public function detailIdGenerator($count){
-        $autoIndex = str_pad($count + 1, 4 ,"0", STR_PAD_LEFT);
-        return "{$this->orderId}-$autoIndex";
+    public function generateDetailId(int $count): string
+    {
+        $autoIndex = str_pad($count + 1, 4, "0", STR_PAD_LEFT);
+        return "{$this->orderId}-{$autoIndex}";
     }
 
-    public function validateId($dirtyId){
-        $id = $this->idValidator($dirtyId);
-        if(!$id) return false;
-        $this->id = $id;
-        return true;
-    }
-
-    public function validateOrders(){
-        if (!isset($this->userInput["orders"])){
+    public function validateOrders(): bool
+    {
+        if (!isset($this->userInput["orders"])) {
             http_response_code(422);
-            echo json_encode(["status" => "error", "message" => strtoupper("THERE ARE NO ORDERS!")]);
+            echo json_encode(["status" => "error", "message" => "THERE ARE NO ORDERS!"]);
             return false;
         }
 
-        foreach($this->userInput["orders"] as $index => $order){
-            if(!$this->productIdValidator($order["productId"] ?? null)) { return false; }
-            $this->userInput["orders"][$index]["price"] = $this->priceDB($order["productId"]);
-            if(!$this->quantityValidator($order["quantity"] ?? null )) { return false; }
+        foreach ($this->userInput["orders"] as $index => $order) {
+            if (!$this->validateProductId($order["productId"] ?? null)) {
+                return false;
+            }
+            $this->userInput["orders"][$index]["price"] = $this->fetchPriceFromDb($order["productId"]);
+            if (!$this->validateQuantity($order["quantity"] ?? null)) {
+                return false;
+            }
         }
-        
+
         $this->totalPrice = $this->calculateTotalPrice();
-        $this->orders = $this->userInput["orders"];
+        $this->orders     = $this->userInput["orders"];
         return true;
     }
 
-
-    private function calculateTotalPrice(){
-        $totalPrice = 0;
-        foreach($this->userInput["orders"] as $index => $order){
-            $totalPrice += $order["price"] * $order["quantity"];
+    private function calculateTotalPrice(): float
+    {
+        $total = 0;
+        foreach ($this->userInput["orders"] as $order) {
+            $total += $order["price"] * $order["quantity"];
         }
-        return $totalPrice;
+        return $total;
     }
 
-    private function restoNameValidator(){
-        $value = $this->validator->checkEmpty("RESTORANT NAME", $this->userInput["restoName"] ?? null);
-        if(isset($value)) { $value = $this->validator->checkSpecial("RESTORANT NAME", $value, '/[^a-zA-Z0-9 _\-.]/'); }
+    private function validateRestaurantName(): mixed
+    {
+        $value = $this->validator->checkEmpty("RESTAURANT NAME", $this->userInput["restoName"] ?? null);
+        if (isset($value)) {
+            $value = $this->validator->checkSpecial("RESTAURANT NAME", $value, '/[^a-zA-Z0-9 _\-.]/');
+        }
         return $value;
     }
 
-
-    private function paymentMethodValidator(){
+    private function validatePaymentMethod(): mixed
+    {
         $value = $this->validator->checkEmpty("PAYMENT METHOD", $this->userInput["paymentMethod"] ?? null);
-        if(isset($value)) { $value = $this->validator->checkSpecial("PAYMENT METHOD", $value, '/[^a-zA-Z0-9 _\-.]/'); }
-        return $value;
-    }
-
-    private function productIdValidator($value){
-        $value = $this->validator->checkEmpty("PRODUCT ID", $value ?? null);
-        if(isset($value)) { $value = $this->validator->checkNumber("PRODUCT ID", $value); }
-        return $value;
-    }
-
-    private function priceDB($id){
-        $query = "SELECT price FROM product_list WHERE product_id = :setid";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(":setid", $id);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC)[0]['price'];
-        return $result;
-    }
-
-    private function quantityValidator($value){
-        $value = $this->validator->checkEmpty("QUANTITY", $value ?? null);
-        if(isset($value)) { $value = $this->validator->checkNumber("QUANTITY", $value); }
-        return $value;
-    }
-
-    private function idValidator($dirtyId){
-        if(empty($dirtyId) || !filter_var($dirtyId, FILTER_VALIDATE_INT)){
-            http_response_code(422);
-            echo json_encode(["status" => "error", "message" => strtoupper("The item ID is invalid.")]);
-            return false;
+        if (isset($value)) {
+            $value = $this->validator->checkSpecial("PAYMENT METHOD", $value, '/[^a-zA-Z0-9 _\-.]/');
         }
-        return $dirtyId;
+        return $value;
     }
 
-    public function getDailySalesId() { return $this->dailySalesId; }
-    public function getRestoname() { return $this->restoName; }
-    public function getOrderId(){ return $this->orderId; }
-    public function getOrders(){ return $this->orders; }
-    public function getTotalPrice(){ return $this->totalPrice; }
-    public function getPaymentMethod(){ return $this->paymentMethod; }
-    public function getId(){ return $this->id; }
+    private function validateProductId(mixed $value): mixed
+    {
+        $value = $this->validator->checkEmpty("PRODUCT ID", $value);
+        if (isset($value)) {
+            $value = $this->validator->checkNumber("PRODUCT ID", $value);
+        }
+        return $value;
+    }
 
+    private function fetchPriceFromDb(int $productId): float
+    {
+        $stmt = $this->pdo->prepare("SELECT price FROM product_list WHERE product_id = :setId");
+        $stmt->bindValue(":setId", $productId);
+        $stmt->execute();
+        return (float) $stmt->fetchAll(PDO::FETCH_ASSOC)[0]["price"];
+    }
+
+    private function validateQuantity(mixed $value): mixed
+    {
+        $value = $this->validator->checkEmpty("QUANTITY", $value);
+        if (isset($value)) {
+            $value = $this->validator->checkNumber("QUANTITY", $value);
+        }
+        return $value;
+    }
+
+    public function getDailySalesId(): string|null    { return $this->dailySalesId; }
+    public function getRestaurantName(): string|null  { return $this->restaurantName; }
+    public function getOrderId(): string|null         { return $this->orderId; }
+    public function getOrders(): array|null           { return $this->orders; }
+    public function getTotalPrice(): float|null       { return $this->totalPrice; }
+    public function getPaymentMethod(): string|null   { return $this->paymentMethod; }
 }

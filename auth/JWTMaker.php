@@ -1,32 +1,38 @@
 <?php
+
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use \Firebase\JWT\JWT;
 
-
-
-class JWTMaker{
+class JWTMaker
+{
     public function __construct(
-        private $clientId,
-        private $clientName,
-        private $restoName,
-        private $role,
-        private $expiry
-    ){}
+        private string $clientId,
+        private string $clientName,
+        private string $restaurantName,
+        private string $role,
+        private int    $expiry
+    ) {}
 
-    public function createToken(){
+    public function createToken(): void
+    {
         $token = JWT::encode(
             [
-                'iat' => time(),
-                'nbf' => time(),
-                'exp' => time() + $this->expiry,
-                'data' => [
-                    "id" => $this->clientId
-                ]
+                "iat"  => time(),
+                "nbf"  => time(),
+                "exp"  => time() + $this->expiry,
+                "data" => ["id" => $this->clientId],
             ],
             getenv("JWT_KEY"),
-            'HS256'
+            "HS256"
         );
-        echo json_encode(["token" => $token, "name" => $this->clientName, "resto" => $this->restoName, "role" => $this->role, "expiration" => $this->expiry]);
+
+        echo json_encode([
+            "token"      => $token,
+            "name"       => $this->clientName,
+            "resto"      => $this->restaurantName,
+            "role"       => $this->role,
+            "expiration" => $this->expiry,
+        ]);
     }
 }
