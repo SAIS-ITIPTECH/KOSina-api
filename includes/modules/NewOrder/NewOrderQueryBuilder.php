@@ -67,7 +67,7 @@ class NewOrderQueryBuilder
             ");
             $stmt->bindValue(":setDetailId",  $this->model->generateDetailId($index), PDO::PARAM_STR);
             $stmt->bindValue(":setOrderId",   $this->model->getOrderId(),              PDO::PARAM_STR);
-            $stmt->bindValue(":setProductId", $order["productId"],                    PDO::PARAM_INT);
+            $stmt->bindValue(":setProductId", $order["productId"],                    PDO::PARAM_STR);
             $stmt->bindValue(":setQuantity",  $order["quantity"],                     PDO::PARAM_INT);
             $this->execution->execute($stmt);
         }

@@ -28,7 +28,8 @@ class Image implements Controller{
 
             case "POST":
                 if (!$this->checkRole()) return;
-                $this->queryBuilder->post();
+                if (!$this->checkId()) return;
+                $this->queryBuilder->post($this->id);
                 break;
 
             case "PATCH":

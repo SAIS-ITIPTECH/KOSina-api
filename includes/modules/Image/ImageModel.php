@@ -6,6 +6,8 @@ require_once __DIR__ . "/../../Database/Database.php";
      
 class ImageModel{
     private $img;
+    private $id;
+    private $target;
     private $productId;
     private $imageId;
     private $displayUrl;
@@ -47,13 +49,13 @@ class ImageModel{
 
     public function imageIdValidator(){
         $value = $this->validator->checkEmpty("Image ID", $this->userInput["imageId"] ?? null);
-        if(isset($value)) { $value = $this->validator->checkNumber("PRICE", $value); }
+        if(isset($value)) { $value = $this->validator->checkSpecial("Image ID", $value, '[^a-zA-Z0-9\-]'); }
         return $value;
     }
 
     public function validateId($id){
         $value = $this->validator->checkEmpty("Image ID", $id ?? null);
-        if(isset($value)) { $value = $this->validator->checkNumber("PRICE", $value); }
+        if(isset($value)) { $value = $this->validator->checkSpecial("Image ID", $value, '[^a-zA-Z0-9\-]'); }
         return $value;
     }
     
@@ -102,6 +104,23 @@ class ImageModel{
         return true;
     }
 
+    public function processId($address){
+        [$target, $id] = explode('.', $address);
+        if ($this->validateId($id) === null) { return false; }
+        $this->id = $id;
+        if ($this->validateTarget($target) === null) { return false; }
+        $this->target = $target;
+        return true;
+    }
+
+    private function validateTarget($value){
+        $value = $this->validator->checkEmpty("TARGET", $this->userInput["productId"] ?? null);
+        if(isset($value)) { $value = $this->validator->checkSpecial("TARGET", $value, '[^a-zA-Z0-9\-]'); }
+        return $value;
+    }
+
+    public function getId() { return $this->id; }
+    public function getTarget() { return $this->target; }
     public function getProductId() { return $this->productId; }
     public function getImageId() { return $this->imageId; }
     public function getDisplayUrl() { return $this->displayUrl; }

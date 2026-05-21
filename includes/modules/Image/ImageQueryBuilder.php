@@ -20,7 +20,8 @@ class ImageQueryBuilder{
         echo json_encode($result);
     }
 
-    public function post(){
+    public function post($id){
+        $this->model->processId($id);
         if (!$this->model->validateAll()){return;}
         if(!$this->model->checkDuplicate($this->model->getProductId())) { return null; }
         $query = "INSERT INTO product_images (product_id, image_id, display_url)
@@ -31,6 +32,7 @@ class ImageQueryBuilder{
     }
 
     public function update($id){
+        $this->model->processId($id);
         if (!$this->model->validateAll()){return;}
 
         $query = "UPDATE product_images SET product_id = :setProductId, image_id = :setImageId , display_url = :setDisplayUrl  WHERE product_id = :setid";
@@ -41,6 +43,7 @@ class ImageQueryBuilder{
     }
 
     public function delete($id){
+        echo $id;
         $query = "DELETE FROM product_images WHERE image_id = :setid";
         $id = $this->model->validateId($id);
         if (!$id) { return; }
