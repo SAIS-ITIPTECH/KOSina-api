@@ -1,5 +1,7 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+
 // MODULES
 require_once __DIR__ . "/includes/modules/Categories/Categories.php";
 require_once __DIR__ . "/includes/modules/Products/Products.php";
