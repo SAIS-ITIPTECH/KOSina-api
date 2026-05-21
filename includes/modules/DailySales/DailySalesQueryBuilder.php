@@ -22,7 +22,8 @@ class DailySalesQueryBuilder{
         $query = "
             SELECT * FROM daily_sales
             WHERE date >= :datePage
-            AND date < :nextDate;
+            AND date < :nextDate
+            ORDER BY date DESC;
         ";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(":datePage", "$datePage-01", PDO::PARAM_STR);
