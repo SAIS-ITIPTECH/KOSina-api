@@ -9,7 +9,7 @@ class ProductModel
     private float|null  $price      = null;
     private string|null $categoryId = null;
     private bool|null   $available  = null;
-    private string|null    $id         = null;
+    private string|null $id         = null;
     private array       $userInput  = [];
     private Validation  $validator;
 
@@ -99,6 +99,6 @@ class ProductModel
     public function getPrice(): float|null          { return $this->price; }
     public function getCategoryId(): string|null    { return $this->categoryId; }
     public function getAvailable(): bool|null       { return $this->available; }
-    public function getId(): int|null               { return $this->id; }
+    public function getId(): string|null            { return $this->id; }
     public function getUserInput(): array           { return $this->userInput; }
 }
