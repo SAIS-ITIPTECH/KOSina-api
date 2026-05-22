@@ -41,7 +41,6 @@ class ProductModel
         $this->categoryId = $categoryId;
         $this->available  = ($available === "true");
 
-        error_log(json_encode[ $this->name , $this->productId, $this->price, $this->categoryId, $this->available]);
         return true;
     }
 
