@@ -11,7 +11,8 @@ class LiveOrderQueryBuilder{
             FROM order_history
             INNER JOIN order_details ON order_history.order_id = order_details.order_id
             INNER JOIN product_list ON order_details.product_id = product_list.product_id
-            WHERE served = 0 AND paid = 1;
+            WHERE served = 0 AND paid = 1
+            ORDER BY order_details.order_id DESC, order_details.detail_id ASC
         ";
         $stmt = $this->pdo->prepare($query);
         $this->execution->execute($stmt);
