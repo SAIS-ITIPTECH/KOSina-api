@@ -23,12 +23,11 @@ class CategoryModel
     public function validateFields(): bool
     {
         $categoryId   = $this->validateCategoryId();
+        if (!$categoryId) {return false;}
         $name         = $this->validateName();
+        if (!$name) {return false;}
         $displayIndex = $this->validateDisplayIndex();
-
-        if (!$categoryId || !$name || !$displayIndex) {
-            return false;
-        }
+        if (!$displayIndex) {return false;}
 
         $this->categoryId   = $categoryId;
         $this->name         = $name;

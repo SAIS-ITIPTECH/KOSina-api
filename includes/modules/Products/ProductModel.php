@@ -25,14 +25,15 @@ class ProductModel
     public function validateFields(): bool
     {
         $name       = $this->validateName();
+        if (!$name) {return false;}
         $productId  = $this->validateProductId();
+        if (!$productId) {return false;}
         $price      = $this->validatePrice();
+        if (!$price) {return false;}
         $categoryId = $this->validateCategoryId();
+        if (!$categoryId) {return false;}
         $available  = $this->validateAvailable();
-
-        if (!$name || !$price || !$categoryId || $available === null) {
-            return false;
-        }
+        if ($available === null) {return false;}
 
         $this->name       = $name;
         $this->productId  = $productId;
