@@ -131,7 +131,7 @@ class NewOrderModel
     private function fetchPriceFromDb($productId): float
     {
         $stmt = $this->pdo->prepare("SELECT price FROM product_list WHERE product_id = :setId");
-        $stmt->bindValue(":setId", $productId);
+        $stmt->bindValue(":setId", $productId, PDO::PARAM_STR);
         $stmt->execute();
         return (float) $stmt->fetchAll(PDO::FETCH_ASSOC)[0]["price"];
     }
