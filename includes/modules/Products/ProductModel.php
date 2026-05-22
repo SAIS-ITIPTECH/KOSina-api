@@ -9,7 +9,7 @@ class ProductModel
     private float|null  $price      = null;
     private string|null $categoryId = null;
     private bool|null   $available  = null;
-    private int|null    $id         = null;
+    private string|null    $id         = null;
     private array       $userInput  = [];
     private Validation  $validator;
 
