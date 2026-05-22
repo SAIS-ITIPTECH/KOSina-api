@@ -13,18 +13,12 @@ class ProductQueryBuilder
     public function get(?string $categoryId): void
     {
         $baseSelect = "
-            SELECT 
-                order_history.order_id, 
-                product_list.name, 
-                order_details.quantity,
-                order_history.total_price,
-                COUNT(order_details.detail_id) OVER (PARTITION BY order_history.order_id) AS item_count,
-                (SELECT COUNT(DISTINCT order_id) FROM order_history WHERE served = 0 AND paid = 1) AS total_orders
-            FROM order_history
-            INNER JOIN order_details ON order_history.order_id = order_details.order_id
-            INNER JOIN product_list ON order_details.product_id = product_list.product_id
-            WHERE served = 0 AND paid = 1
-            ORDER BY order_details.order_id DESC, order_details.detail_id ASC
+            SELECT product_list.product_id, product_list.name, product_list.category_id,
+                   product_list.price, product_list.available,
+                   product_images.display_url, product_images.image_id
+            FROM product_list
+            LEFT JOIN product_images ON product_list.product_id = product_images.product_id
+            WHERE product_list.deleted = false
         ";
 
         if ($categoryId === null) {

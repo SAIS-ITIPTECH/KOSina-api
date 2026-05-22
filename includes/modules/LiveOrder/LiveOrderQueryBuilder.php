@@ -7,7 +7,13 @@ class LiveOrderQueryBuilder{
 
     public function get(){
         $query = "
-            SELECT order_history.order_id, product_list.name, order_details.quantity
+            SELECT 
+                order_history.order_id, 
+                product_list.name, 
+                order_details.quantity,
+                order_history.total_price,
+                COUNT(order_details.detail_id) OVER (PARTITION BY order_history.order_id) AS item_count,
+                (SELECT COUNT(DISTINCT order_id) FROM order_history WHERE served = 0 AND paid = 1) AS total_orders
             FROM order_history
             INNER JOIN order_details ON order_history.order_id = order_details.order_id
             INNER JOIN product_list ON order_details.product_id = product_list.product_id
