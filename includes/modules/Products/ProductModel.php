@@ -50,7 +50,7 @@ class ProductModel
         if ($this->validator->checkEmpty("TARGET ID", $dirtyId ?? null) === null) {return false;}
         if ($this->validator->checkSpecial("TARGET ID", $dirtyId ?? null, '/[^a-zA-Z0-9 _\-.]/') === null) {return false;}
 
-        $this->id = (int) $dirtyId;
+        $this->id = $dirtyId;
         return true;
     }
 
