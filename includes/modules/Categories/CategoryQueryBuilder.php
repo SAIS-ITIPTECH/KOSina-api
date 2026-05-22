@@ -38,14 +38,82 @@ class CategoryQueryBuilder
 
     public function update(string $id): void
     {
-        if (!$this->model->validateId($id)) {
+        if (!$this->model->validateId($id) || !$this->model->validateFields()) {
             return;
         }
+
+        try {
+            $this->pdo->beginTransaction();
+
+            $query = "SELECT COUNT(*) FROM menu_categories FOR UPDATE";
+            $stmt  = $this->pdo->prepare($query);
+            $stmt->execute();
+            $total = (int) $stmt->fetchColumn();
+
+            if ($this->model->getDisplayIndex() > $total) {
+                $this->model->setDisplayIndex($total);
+            }
+
+            $query = "SELECT display_index FROM menu_categories WHERE category_id = :setid FOR UPDATE";
+            $stmt  = $this->pdo->prepare($query);
+            $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_STR);
+            $stmt->execute();
+            
+            $fetched = $stmt->fetchColumn();
+            if ($fetched === false) {
+                $this->pdo->rollback();
+                return;
+            }
+            $oldIndex = (int)$fetched;
+
+            $this->reorderIndex($oldIndex);
+            $this->setUpdate();
+            
+            $this->pdo->commit();
+        } catch (PDOexception $e) {
+            echo json_encode(["error" => $e->getMessage()]);
+            $this->pdo->rollback();
+        }
+    }
+
+    private function reorderIndex(int $oldIndex): void
+    {
+        if ($oldIndex === $this->model->getDisplayIndex()) {
+            return;
+        }
+        
+        $query = "UPDATE menu_categories SET display_index = -1 WHERE category_id = :setid";
+        $stmt  = $this->pdo->prepare($query);
+        $stmt->bindValue(":setid", $this->model->getId(), PDO::PARAM_STR);
+        $stmt->execute();
+        
+        $query = ($oldIndex < $this->model->getDisplayIndex()) ? "
+            UPDATE menu_categories
+            SET display_index = display_index - 1
+            WHERE display_index > :setoldindex AND display_index <= :setindex
+            ORDER BY display_index ASC
+        " : "
+            UPDATE menu_categories
+            SET display_index = display_index + 1
+            WHERE display_index >= :setindex AND display_index < :setoldindex
+            ORDER BY display_index DESC
+        ";
+
+        $stmt  = $this->pdo->prepare($query);
+        $stmt->bindValue(":setoldindex", $oldIndex, PDO::PARAM_INT);
+        $stmt->bindValue(":setindex", $this->model->getDisplayIndex(), PDO::PARAM_INT);
+        $this->execution->execute($stmt);
+    }
+
+    private function setUpdate(): void
+    {   
         $query = "UPDATE menu_categories
-                  SET category_id = :setCategoryId, name = :setName, display_index = :setDisplayIndex
-                  WHERE category_id = :setId";
+                SET category_id = :setCategoryId, name = :setName, display_index = :setDisplayIndex
+                WHERE category_id = :setId";
+                
         $stmt  = $this->pdo->prepare($query);
         $stmt->bindValue(":setId", $this->model->getId(), PDO::PARAM_STR);
+        
         $this->bindAndExecute("HAS BEEN UPDATED", $stmt);
     }
 

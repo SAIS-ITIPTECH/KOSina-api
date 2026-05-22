@@ -33,6 +33,7 @@ class LoginController
 
         $info   = $this->query->getUserInfo($this->model->getUsername());
         $expiry = ($info[0]["role"] === "kiosk") ? (60 * 60) * 24 : (60 * 60) * 2;
+        $expiry = (getenv("APP_ENV") === "localdev") ? 6666667777777 : $expiry;
 
         $jwt = new JWTMaker(
             $info[0]["account_id"],

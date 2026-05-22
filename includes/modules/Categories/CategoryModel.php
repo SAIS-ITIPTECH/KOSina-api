@@ -67,6 +67,10 @@ class CategoryModel
         return $value;
     }
 
+    public function setDisplayIndex($displayIndex){
+        $this->displayIndex = $displayIndex;
+    }
+
     public function getCategoryId(): string|null   { return $this->categoryId; }
     public function getName(): string|null         { return $this->name; }
     public function getDisplayIndex(): int|null    { return $this->displayIndex; }

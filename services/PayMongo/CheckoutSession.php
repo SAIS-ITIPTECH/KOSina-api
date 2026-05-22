@@ -51,8 +51,13 @@ class CheckoutSession
         return json_decode($response->getBody(), true);
     }
 
-    public function checkPaid(string $sessionId): void
+    public function checkPaid(string|null $sessionId = null): void
     {
+        if (!isset($sessionId)) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "THIS METHOD NEEDS AN ID!"]);
+            return;
+        }
         $response = $this->client->request("GET", "https://api.paymongo.com/v1/checkout_sessions/{$sessionId}", [
             "headers" => [
                 "accept"        => "application/json",

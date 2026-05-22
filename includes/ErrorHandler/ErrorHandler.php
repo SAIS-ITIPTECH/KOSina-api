@@ -11,7 +11,7 @@ class ErrorHandler
             $message = self::duplicate($exception);
         }
 
-        if (getenv("APP_ENV") === "development") {
+        if (getenv("APP_ENV") === "localdev") {
             echo json_encode([
                 "status"  => "error",
                 "message" => $message,

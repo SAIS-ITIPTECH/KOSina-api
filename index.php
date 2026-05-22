@@ -64,10 +64,14 @@ class Main
     public function start(): void
     {
         $this->setTarget();
-        $controller = $this->resolve();
-        if ($controller === null) {
+
+        if ($this->isMiscProcess()) {
             return;
         }
+
+        $controller = $this->databaseProcesses();
+        if ($controller === null) { return; }
+        
         $controller->buildModel();
         $controller->query();
     }
@@ -83,30 +87,36 @@ class Main
         $this->page     = (isset($segments[3]) && $segments[3] !== "null") ? (int) $segments[3] : null;
     }
 
-    private function resolve(): ?object
+    private function isMiscProcess(): bool
     {
         switch ($this->table) {
             case "login":
                 (new LoginController())->start();
-                return null;
+                return true;
 
             case "return":
                 (new TokenChecker())->checkToken();
-                return null;
+                return true;
 
             case "confirmCashless":
                 (new ConfirmPayment())->checkCashless();
-                return null;
+                return true;
 
             case "confirmCash":
                 (new ConfirmPayment())->checkCash($this->getDbCredentials(), $this->id);
-                return null;
+                return true;
 
             case "checkpaid":
                 (new CheckoutSession(null, null, null))->checkPaid($this->id);
-                return null;
+                return true;
+                
+            default:
+                return false;
         }
+    }
 
+    private function databaseProcesses(): ?object
+    {
         $dbCredentials = $this->getDbCredentials();
         $database      = new Database(
             getenv("DATABASE_HOSTNAME"),

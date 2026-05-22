@@ -24,7 +24,7 @@ class Validation
 
     public function checkNumber(string $column, mixed $value): mixed
     {
-        if (!is_numeric($value)) {
+        if (!is_numeric($value) || $value <= 0) {
             http_response_code(422);
             echo json_encode(["status" => "error", "message" => strtoupper("{$column} SHOULD BE A NUMBER!")]);
             return null;

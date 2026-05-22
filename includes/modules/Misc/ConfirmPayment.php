@@ -32,8 +32,14 @@ class ConfirmPayment
         }
     }
 
-    public function checkCash(array $dbCredentials, string $orderId): void
-    {
+    public function checkCash(array $dbCredentials, string|null $orderId): void
+    {   
+        if (!isset($orderId)) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "THIS REQUEST NEEDS AN ID!"]);
+            return;
+        }
+
         $this->orderId = $orderId;
         $database      = new Database(
             getenv("DATABASE_HOSTNAME"),

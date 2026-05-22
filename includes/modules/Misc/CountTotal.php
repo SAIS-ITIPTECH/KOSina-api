@@ -34,6 +34,8 @@ class CountTotal
     public function count(string|null $datePage): void
     {
         if (!$this->query || !$this->validateDatePage($datePage)) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "message" => "THIS METHOD NEEDS AN DATE!"]);
             return;
         }
 
