@@ -24,6 +24,7 @@ class LiveOrder implements Controller{
 
             case "PATCH":
                 if (!$this->checkRole()) return;
+                $this->queryBuilder->update($this->id);
                 break;
 
             default:
