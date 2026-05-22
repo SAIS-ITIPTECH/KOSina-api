@@ -123,7 +123,7 @@ class NewOrderModel
     {
         $value = $this->validator->checkEmpty("PRODUCT ID", $value);
         if (isset($value)) {
-            $value = $this->validator->checkNumber("PRODUCT ID", $value);
+            $value = $this->validator->checkSpecial("PRODUCT ID", $value, '/[^a-zA-Z0-9 _\-.]/');
         }
         return $value;
     }
