@@ -7,6 +7,8 @@ require_once __DIR__ . "/../../Validation/Validation.php";
 class CountTotal
 {
     private string|false $query;
+    private int $totalCount;
+    private int $totalPages;
 
     private array $tableMap = [
         "history" => "
@@ -33,16 +35,26 @@ class CountTotal
 
     public function count(string|null $datePage): void
     {
-        if (!$this->query || !$this->validateDatePage($datePage)) {
-            http_response_code(400);
-            echo json_encode(["status" => "error", "message" => "THIS METHOD NEEDS AN DATE!"]);
-            return;
-        }
+        if (!$this->query || !$this->validateDatePage($datePage)) { return; }
 
         $stmt = $this->pdo->prepare($this->query);
         $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
         $this->execution->execute($stmt);
-        echo json_encode($this->execution->getResults()[0]);
+        $this->totalCount = (int) ($this->execution->getResults())[0]["total"];
+        $this->totalPages = ceil(($this->totalCount) / 50);
+    }
+
+    public function sendBack(): void
+    {
+        echo json_encode([
+            "total" => $this->totalCount,
+            "totalPages" => $this->totalPages
+        ]);
+    }
+
+    public function getCount(): int
+    {
+        return $this->totalPages;
     }
 
     private function validateDatePage(string|null $datePage): bool

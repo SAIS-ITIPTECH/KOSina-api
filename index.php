@@ -128,7 +128,9 @@ class Main
         $execution = new Execution();
 
         if ($this->id === "count") {
-            (new CountTotal($this->table, $pdo, $execution))->count($this->datePage);
+            $count = new CountTotal($this->table, $pdo, $execution);
+            $count->count($this->datePage);
+            $count->sendBack();
             return null;
         }
 
