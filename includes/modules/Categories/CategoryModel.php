@@ -64,6 +64,12 @@ class CategoryModel
         if (isset($value)) {
             $value = $this->validator->checkNumber("INDEX", $value);
         }
+
+        if ($value <= 0) {
+            http_response_code(422);
+            echo json_encode(["status" => "error", "message" => strtoupper("INDEX SHOULD BE A MORE THAN 0!")]);
+            $value = null;
+        }
         return $value;
     }
 
