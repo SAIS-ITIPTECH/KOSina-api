@@ -23,14 +23,19 @@ class CountTotal
             WHERE DATE(order_date) = DATE(:setDateLimit)
         ",
         "sales" => "daily_sale",
+        "liveorder" => "
+            SELECT COUNT(*) AS total
+            FROM order_history
+            WHERE DATE(order_date) = DATE(:setDateLimit) AND served = 0 AND paid = 1
+        "
     ];
 
     public function __construct(
-        string            $table,
+        private string    $table,
         private PDO       $pdo,
         private Execution $execution
     ) {
-        $this->query = $this->tableMap[$table] ?? false;
+        $this->query = $this->tableMap[$this->table] ?? false;
     }
 
     public function count(string|null $datePage): mixed

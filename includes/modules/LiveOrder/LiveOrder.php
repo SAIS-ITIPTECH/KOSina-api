@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../../Controller/Controller.php";
 require_once __DIR__ . "/LiveOrderQueryBuilder.php";
+require_once __DIR__ . "/LiveOrderModel.php";
 
 class LiveOrder implements Controller{
     private $queryBuilder;
@@ -9,17 +10,20 @@ class LiveOrder implements Controller{
         private $pdo,
         private $execution,
         private $id,
-        private $role
+        private $role,
+        private $datePage,
+        private $pages
     ){}
 
     public function buildModel(){
-        $this->queryBuilder = new LiveOrderQueryBuilder($this->pdo, $this->execution);
+        $model = new LiveOrderModel();
+        $this->queryBuilder = new LiveOrderQueryBuilder($this->pdo, $this->execution, $model);
     }
 
     public function query(){
         switch($_SERVER["REQUEST_METHOD"]){
             case "GET":
-                $this->queryBuilder->get();
+                $this->queryBuilder->get($this->datePage, $this->pages);
                 break;
 
             case "PATCH":
