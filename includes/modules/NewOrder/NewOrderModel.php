@@ -39,12 +39,10 @@ class NewOrderModel
     public function validateFields(): bool
     {
         $restaurantName = $this->validateRestaurantName();
+         if (!$restaurantName) { return false; }
         $paymentMethod  = $this->validatePaymentMethod();
-
-        if (!$restaurantName || !$paymentMethod) {
-            return false;
-        }
-
+        if (!$paymentMethod) { return false; }
+       
         $this->restaurantName = $restaurantName;
         $this->paymentMethod  = $paymentMethod;
         $this->generateOrderId();
@@ -116,6 +114,14 @@ class NewOrderModel
         if (isset($value)) {
             $value = $this->validator->checkSpecial("PAYMENT METHOD", $value, '/[^a-zA-Z0-9 _\-.]/');
         }
+
+        $allowedPayments = ["cash", "cashless"];
+        if (!in_array($value, $allowedPayments)) {
+            http_response_code(422);
+            echo json_encode(["status" => "error", "message" => "INVALID PAYMENT METHOD!"]);
+            return false;
+        }
+
         return $value;
     }
 

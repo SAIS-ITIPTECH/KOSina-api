@@ -33,15 +33,23 @@ class CountTotal
         $this->query = $this->tableMap[$table] ?? false;
     }
 
-    public function count(string|null $datePage): void
+    public function count(string|null $datePage): mixed
     {
-        if (!$this->query || !$this->validateDatePage($datePage)) { return; }
+        if (!$this->query) {
+            http_response_code(422);
+            echo json_encode(["status" => "error", "message" => strtoupper("INVALID TABLE NAME")]);
+            return false;
+        }
+
+        if (!$this->validateDatePage($datePage)) { return false; }
 
         $stmt = $this->pdo->prepare($this->query);
         $stmt->bindValue(":setDateLimit", $datePage, PDO::PARAM_STR);
         $this->execution->execute($stmt);
         $this->totalCount = (int) ($this->execution->getResults())[0]["total"];
         $this->totalPages = ceil(($this->totalCount) / 50);
+
+        return true;
     }
 
     public function sendBack(): void
@@ -54,7 +62,7 @@ class CountTotal
 
     public function getCount(): int
     {
-        return $this->totalPages;
+        return $this->totalCount;
     }
 
     private function validateDatePage(string|null $datePage): bool

@@ -48,7 +48,7 @@ class Main
     private string|null $table;
     private string|null $id;
     private string|null $datePage;
-    private int|null $page;
+    private string|null $page;
 
     private array $tableMap = [
         "categories" => Categories::class,
@@ -84,7 +84,8 @@ class Main
         $this->table    = $segments[0] ?? null;
         $this->id       = (isset($segments[1]) && $segments[1] !== "null") ? $segments[1] : null;
         $this->datePage = (isset($segments[2]) && $segments[2] !== "null") ? $segments[2] : null;
-        $this->page     = (isset($segments[3]) && $segments[3] !== "null") ? (int) $segments[3] : null;
+        $this->page     = (isset($segments[3]) && $segments[3] !== "null") ? $segments[3] : null;
+
     }
 
     private function isMiscProcess(): bool

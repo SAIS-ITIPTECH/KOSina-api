@@ -61,10 +61,27 @@ class DetailsModel {
         if($this->validator->checkSpecial("DATE PAGE", $dirtyDatePage, '/[^a-zA-Z0-9\-]/') === null) { return false; }
         return true;
     }
+    
+    public function totalValidator($dirtyTotal){
+        if($this->validator->checkEmpty("PAGE", $dirtyTotal) === null) { return false; }
+        if($this->validator->checkNumber("PAGE", $dirtyTotal) === null) { return false; }
+        return true;
+    }
 
     public function pageValidator($dirtyPage){
         if($this->validator->checkEmpty("PAGE", $dirtyPage) === null) { return false; }
         if($this->validator->checkNumber("PAGE", $dirtyPage) === null) { return false; }
+        return true;
+    }
+
+    public function limitorValidator($dirtyLimitor){
+        if($this->validator->checkEmpty("LIMITOR", $dirtyLimitor) === null) { return false; }
+        if($this->validator->checkSpecial("LIMITOR ", $dirtyLimitor, '/[^a-zA-Z0-9\-]/') === null) { return false; }
+        if(!str_contains($dirtyLimitor, '-')) {
+            http_response_code(422);
+            echo json_encode(["status" => "error", "message" => strtoupper("THE FORMAT OF LIMITOR IS INVALID")]);
+            return false;
+        }
         return true;
     }
 
