@@ -21,7 +21,7 @@ class ProductQueryBuilder
             WHERE product_list.deleted = false
         ";
 
-        if ($categoryId === null) {
+        if ($categoryId === "all") {
             $stmt = $this->pdo->prepare($baseSelect);
         } else {
             $stmt = $this->pdo->prepare($baseSelect . " AND product_list.category_id = :setId");
